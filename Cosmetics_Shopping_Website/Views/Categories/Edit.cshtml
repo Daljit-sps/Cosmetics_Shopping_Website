@@ -1,0 +1,68 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.Models.Category
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Edit";
+}
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-2 ">
+                <div class="space bg-transparent"></div>
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12 col-12 mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+
+                                <div>
+                                    <h4 class="mb-0">Edit Category: @Model.CategoryName</h4>
+                                </div>
+
+                            </div>
+                            <div class="card_CSP text-black">
+                                <div class="card-body">
+                                    <form asp-action="Edit">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <input type="hidden" asp-for="Id" />
+                                        <div class="form-group mt-3">
+                                            <label asp-for="CategoryName" class="control-label"></label>
+                                            <input asp-for="CategoryName" class="form-control" />
+                                            <span asp-validation-for="CategoryName" class="text-danger"></span>
+                                        </div>
+                                        <div class="form-group mt-3 float-end">
+                                            <input type="submit" value="Save" class="btn btn-primary" /> |
+                                            <a asp-action="Index">Back to List</a>
+                                        </div>
+                                    </form>
+                                    <br /><br /><br />
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</body>
+
+
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

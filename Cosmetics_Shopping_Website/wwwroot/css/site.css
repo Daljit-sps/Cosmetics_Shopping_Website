@@ -1,0 +1,152 @@
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+    #LogButton {
+        float: right;
+    }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+#loginImg{
+    height: 620px;
+}
+
+.colors {
+    margin-top: 5px
+}
+
+    .colors ul {
+        list-style: none;
+        display: flex;
+        padding-left: 0px
+    }
+
+        .colors ul li {
+            height: 20px;
+            width: 20px;
+            display: flex;
+            border-radius: 50%;
+            margin-right: 10px;
+            cursor: pointer
+        }
+
+            .colors ul li:nth-child(1) {
+                background-color: #6c704d
+            }
+
+            .colors ul li:nth-child(2) {
+                background-color: #96918b
+            }
+
+            .colors ul li:nth-child(3) {
+                background-color: #68778e
+            }
+
+            .colors ul li:nth-child(4) {
+                background-color: #263f55
+            }
+
+            .colors ul li:nth-child(5) {
+                background-color: black
+            }
+
+
+
+
+.navbar {
+    background-color: #f8f1f4;
+}
+.nav-items-padding{
+    padding-left: 4%;
+}
+
+.nav-padding, .navbar-brand {
+    padding-left: 15%;
+}
+
+.logo-img{
+    width:50px;
+    height:50px;
+    
+}
+.main_nav {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dropdown:hover {
+    background-color: #e6a9b0;
+}
+
+.dropdown:hover > .dropdown-menu {
+    display: block;
+    
+}
+
+.dropdown > .dropdown-toggle:active {
+  
+    pointer-events: none;
+}
+
+.containerAdmin{
+    margin:0;
+    padding:0;
+}
+
+.carousel-image {
+    width:1000px;
+    height: auto;
+}
+
+.CSP {
+    background-image: url('/images/composition-beauty-products-with-copy-space (1).jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.card_CSP {
+    margin-top: 150px;
+    max-width: 400px;
+    border-radius: 1rem;
+}
+
+.card-title_CSP {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.card_U {
+    margin-top: 150px;
+    max-width: 750px;
+    border-radius: 1rem;
+    margin-left:0;
+}
+
+body{
+    background-color: #f8f1f4;
+}
+
+.shop-now-button{
+    text-decoration: none;
+}
+
+.space {
+    height: 70px;
+}
+
+
+

@@ -1,0 +1,65 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.ProductVariantVM
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Details";
+}
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-n22 ">
+                
+                <div class="space bg-transparent"></div>
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12 col-12 mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+                                <div>
+
+                                    <h3>Details of Variant: @Model.VariantName</h3>
+                                </div>
+                               
+                            </div>
+                            <!-- Variant Details  -->
+                            <div class="row m-4">
+                                <div class="col-md-6 border-end">
+                                    <!--image-->
+                                    <img src="~/images/@Model.VariantImage"
+                                         alt="Blushes"
+                                         class="image-responsive w-75 mx-auto d-block" />
+                                </div>
+                                
+                                <div class="col-md-6">
+                                    <!--Data-->
+                                    <h4>@Model.VariantName</h4><br /><br />
+                                    <h6>Description</h6>
+                                    <p>@Model.VariantDescription</p><br /><br />
+                                    <h5>Price: Rs.@Model.Price</h5>
+
+                                    <div class="float-end">
+                                        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+                                        <a asp-action="Index">Back to List</a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+

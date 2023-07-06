@@ -1,0 +1,75 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.ProductVM
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Details";
+}
+
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-2 ">
+                <div class="space bg-transparent"></div>
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12 col-12 mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+
+                                <div>
+                                    <h4 class="mb-0">Details of Product: @Model.ProductName</h4>
+                                </div>
+
+                            </div>
+                            <div class="card_CSP text-black">
+
+                                <div class="card-body">
+                                    <div>
+                                        <dl class="row">
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.ProductName)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                @Html.DisplayFor(model => model.ProductName)
+                                            </dd>
+
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.CategoryId)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                @Html.DisplayFor(model => model.Category)
+                                            </dd>
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.SubCategoryId)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                @Html.DisplayFor(model => model.SubCategory)
+                                            </dd>
+                                        </dl>
+                                        <div class="float-end">
+                                            <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+                                            <a asp-action="Index">Back to List</a>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+
+</body>

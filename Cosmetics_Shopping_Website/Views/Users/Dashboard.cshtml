@@ -1,0 +1,160 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.GetUserVM
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Dashboard";
+}
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-n22 ">
+                <div class="welcome_head row rounded">
+                    <div>
+                        <h3 class="mb-0  text-black">Welcome Back!</h3>
+
+                    </div>
+                    <br />
+                    <br />
+                    <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-6">
+                        <!-- card -->
+                        <div class="card card_dashboard" onclick="location.href='@Url.Action("Index", "Categories")'">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- heading -->
+                                <div class="d-flex justify-content-between align-items-center
+                    mb-3">
+                                    <div>
+                                        <h4 class="mb-0 text-dark">Categories</h4>
+                                    </div>
+
+                                </div>
+                                <!-- project number -->
+                                <div>
+                                    <h1 class="fw-bold text-dark">3</h1>
+                                    <p class="text-dark me-2">View Category</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-6 ms-6">
+                        <!-- card -->
+                        <div class="card card_dashboard" onclick="location.href='@Url.Action("Index", "SubCategories")'">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- heading -->
+                                <div class="d-flex justify-content-between align-items-center
+                    mb-3">
+                                    <div>
+                                        <h4 class="mb-0 text-dark">Sub-Categories</h4>
+                                    </div>
+
+                                </div>
+                                <!-- project number -->
+                                <div>
+                                    <h1 class="fw-bold text-dark">7</h1>
+                                    <p class="text-dark me-2">View Sub-Categories</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-6 ms-6">
+                        <!-- card -->
+                        <div class="card card_dashboard" onclick="location.href='@Url.Action("Index", "Products")'">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- heading -->
+                                <div class="d-flex justify-content-between align-items-center
+                    mb-3">
+                                    <div>
+                                        <h4 class="mb-0 text-dark">Products</h4>
+                                    </div>
+
+                                </div>
+                                <!-- project number -->
+                                <div>
+                                    <h1 class="fw-bold text-dark">18</h1>
+                                    <p class="text-dark me-2">View Products</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-12 col-12 mt-6">
+                        <!-- card -->
+                        <div class="card card_dashboard" onclick="location.href='@Url.Action("Index", "ProductVariants")'">
+                            <!-- card body -->
+                            <div class="card-body">
+                                <!-- heading -->
+                                <div class="d-flex justify-content-between align-items-center
+                    mb-3">
+                                    <div>
+                                        <h4 class="mb-0 text-dark">Product-Variants</h4>
+                                    </div>
+
+                                </div>
+                                <!-- project number -->
+                                <div>
+                                    <h1 class="fw-bold text-dark">16</h1>
+                                    <p class="text-dark me-2">View Product-Variants</p>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="space bg-transparent"></div>
+                <div id="variantcarousel" class="carousel slide carousel-custom" data-bs-ride="carousel">
+                    <ol class="carousel-indicators">
+                        <li data-bs-target="#variantcarousel" data-bs-slide-to="0" class="active"></li>
+                        <li data-bs-target="#variantcarousel" data-bs-slide-to="1"></li>
+                        <li data-bs-target="#variantcarousel" data-bs-slide-to="2"></li>
+                    </ol>
+                    
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="~/images/Products.png" class="d-block w-100 carousel-image" alt="Image 1">
+                            <div class="carousel-caption d-none d-md-block text-black">
+                                <a asp-controller="Products" asp-action="Index" class="text-muted">View Products</a>
+                            </div>
+                            
+                        </div>
+                        <div class="carousel-item">
+                            <img src="/images/Page_carousel2.png" class="d-block w-100 carousel-image" alt="Image 2">
+                            <div class="carousel-caption d-none d-md-block text-black">
+                                <a asp-controller="ProductVariants" asp-action="Index" class="text-muted ps-5 float-start">View Product-Variants</a>
+                            </div>
+                        </div>
+                        <div class="carousel-item">
+                            <img src="~/images/Page_carousel3.png" class="d-block w-100 carousel-image" alt="Image 3">
+                            <div class="carousel-caption d-none d-md-block text-black">
+                                <a asp-controller="Categories" asp-action="Index" class="text-muted ps-5 float-start">View Categories</a>
+                            </div>
+                        </div>
+                    </div>
+                   @* <a class="carousel-control-prev" href="#variantcarousel" role="button" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon bg-black" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#variantcarousel" role="button" data-bs-slide="next">
+                        <span class="carousel-control-next-icon bg-black" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </a>*@
+                </div>
+        
+            </div>
+        </div>
+    </div>
+
+
+</body>
+

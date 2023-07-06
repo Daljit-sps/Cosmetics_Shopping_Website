@@ -1,0 +1,78 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.GetUserVM
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Details";
+}
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-2 ">
+                <div class="space bg-transparent"></div>
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12 col-12 mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+
+                                <div>
+                                    <h4 class="mb-0">Details of User- @Model.FirstName @Model.LastName</h4>
+                                </div>
+
+                            </div>
+                            <div class="card_CSP text-black">
+
+                                <div class="card-body">
+                                    <div>
+                                        <dl class="row">
+                                            <dt class="col-sm-3">
+                                                @Html.DisplayNameFor(model => model.FirstName)
+                                            </dt>
+                                            <dd class="col-sm-7">
+                                                @Html.DisplayFor(model => model.FirstName)
+                                            </dd>
+                                            <dt class="col-sm-3">
+                                                @Html.DisplayNameFor(model => model.LastName)
+                                            </dt>
+                                            <dd class="col-sm-7">
+                                                @Html.DisplayFor(model => model.LastName)
+                                            </dd>
+                                            <dt class="col-sm-3">
+                                                @Html.DisplayNameFor(model => model.MobileNumber)
+                                            </dt>
+                                            <dd class="col-sm-7">
+                                                @Html.DisplayFor(model => model.MobileNumber)
+                                            </dd>
+                                            <dt class="col-sm-3">
+                                                @Html.DisplayNameFor(model => model.Email)
+                                            </dt>
+                                            <dd class="col-sm-7">
+                                                @Html.DisplayFor(model => model.Email)
+                                            </dd>
+                                        </dl>
+                                        <div class="float-end">
+                                            <a asp-action="Edit" asp-route-id="@Model?.UserId">Edit</a> |
+                                            <a asp-action="Index">Back to List</a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+
+
+</body>

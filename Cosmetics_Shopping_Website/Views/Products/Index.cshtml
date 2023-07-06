@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Cosmetics_Shopping_Website.GenericPattern.ViewModels.ProductVM>
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Index";
+}
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-2 "> 
+                <br />
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12 mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+                                <div>
+
+                                    <h4 class="mb-0 float-start">Products</h4>
+                                    <a asp-action="Create" class="btn btn-primary float-end">Add Product</a>
+
+                                </div><br />
+                            </div>
+                            <!-- table  -->
+                            <div class="table-responsive">
+                                <br />
+                                <table class="table text-nowrap mt-4" id="table_list">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th> @Html.DisplayNameFor(model => model.Category)</th>
+                                            <th> @Html.DisplayNameFor(model => model.SubCategory)</th>
+                                            <th> @Html.DisplayNameFor(model => model.ProductName)</th>
+
+                                            <th> Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Category)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SubCategory)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.ProductName)
+                                                </td>
+
+                                                <td>
+
+                                                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit" data-mdb-toggle="tooltip" title="Edit"></i></a>
+                                                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle" aria-hidden="true" data-mdb-toggle="tooltip" title="View Details"></i></a>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-id="@item.Id"><i class="fa fa-trash" aria-hidden="true" data-mdb-toggle="tooltip" title="Delete"></i></a>
+                                                </td>
+                                            </tr>
+                                           
+                                        }
+                                    </tbody>
+                                </table>
+                              
+                            </div>
+                           
+                        </div>
+
+                    </div>
+                </div>
+                <br />
+
+            </div>
+        </div>
+    </div>
+    <!-- Delete Confirmation Modal -->
+
+    <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 1rem; background-color: #f9f5f2; ">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <a id="deleteConfirmationButton" class="btn btn-danger">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @section scripts{
+        <script>
+            $('#deleteConfirmationModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var Id = button.data('id');
+                var deleteUrl = '@Url.Action("DeleteConfirmed", "SubCategories")' + '/' + Id;
+                $("#deleteConfirmationButton").attr("href", deleteUrl);
+            });
+            $(document).ready(function () {
+                $('#table_list').DataTable();
+            });
+
+            $(document).ready(function () {
+                $('#table_list').DataTable();
+            });
+        </script>
+    }
+
+   
+
+
+</body>

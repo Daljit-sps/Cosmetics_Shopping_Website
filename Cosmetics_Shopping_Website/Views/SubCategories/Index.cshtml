@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Cosmetics_Shopping_Website.GenericPattern.ViewModels.SubCategoryVM>
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Index";
+}
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-2 ">
+                <div class="space bg-transparent"></div>
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12 mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+                                <div>
+
+                                    <h4 class="mb-0 float-start">Sub-Categories</h4>
+                                    <a asp-action="Create" class="btn btn-primary float-end">Add Sub-Category</a>
+
+                                </div>
+                                <br />
+                            </div>
+                            <!-- table  -->
+                            <div class="table-responsive">
+                                <br />
+                                <table class="table text-nowrap mt-4" id="table_list">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th> @Html.DisplayNameFor(model => model.Category)</th>
+                                            <th> @Html.DisplayNameFor(model => model.SubCategoryName)</th>
+
+                                            <th> Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.Category)
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.SubCategoryName)
+                                                </td>
+
+                                                <td>
+
+                                                    <a asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit" data-mdb-toggle="tooltip" title="Edit"></i></a>
+                                                    <a asp-action="Details" asp-route-id="@item.Id"><i class="fa fa-info-circle" aria-hidden="true" data-mdb-toggle="tooltip" title="View Details"></i></a>
+                                                    <a href="#" data-bs-toggle="modal" data-bs-target="#deleteModal-@item.Id"><i class="fa fa-trash" aria-hidden="true" data-mdb-toggle="tooltip" title="Delete"></i></a>
+                                                </td>
+                                            </tr>
+                                            <!-- Delete Confirmation Modal -->
+
+                                            <div class="modal fade" id="deleteModal-@item.Id" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog modal-dialog-centered">
+                                                    <div class="modal-content" style="border-radius: 1rem; background-color: #f9f5f2; ">
+                                                        <div class="modal-header">
+                                                            <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <p>Are you sure you want to delete the Sub-Category "@item.SubCategoryName"?</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                            <a asp-action="DeleteConfirmed" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @section scripts{
+        <script>
+            
+            $(document).ready(function () {
+                $('#table_list').DataTable();
+            });
+        </script>
+    }
+    
+
+</body>
+
+
+

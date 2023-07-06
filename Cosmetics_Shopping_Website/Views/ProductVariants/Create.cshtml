@@ -1,0 +1,109 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.ProductVariantVM
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Create";
+}
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-2 ">
+                <div class="space bg-transparent"></div>
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12 col-12 mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+
+                                <div>
+                                    <h4 class="mb-0">Create Product-Variant</h4>
+                                </div>
+
+                            </div>
+                            <div class="card_CSP text-black">
+                                <div class="card-body">
+                                    <form asp-action="Create" enctype="multipart/form-data">
+                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                        <div class="form-group">
+                                            <div class="form-outline mb-4">
+                                                <label asp-for="ProductId" class="control-label"></label>
+                                                <select asp-for="ProductId" class="form-control" asp-items="ViewBag.DropDownDataForProduct">
+                                                    <option>---Select Product--</option>
+                                                </select>
+                                                <span asp-validation-for="ProductId" class="text-danger"></span>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-outline mb-4">
+                                                <label asp-for="VariantName" class="control-label"></label>
+                                                <input asp-for="VariantName" class="form-control" />
+                                                <span asp-validation-for="VariantName" class="text-danger"></span>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-outline mb-4">
+                                                <label asp-for="VariantDescription" class="control-label"></label>
+                                                <textarea asp-for="VariantDescription" class="form-control"></textarea>
+
+                                                <span asp-validation-for="VariantDescription" class="text-danger"></span>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-outline mb-4">
+                                                <label asp-for="Price" class="control-label"></label>
+                                                <input asp-for="Price" class="form-control" />
+                                                <span asp-validation-for="Price" class="text-danger"></span>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="form-outline mb-4">
+                                                <label asp-for="ImageFile" class="control-label"></label>
+                                                <input asp-for="ImageFile" type="file" class="form-control-file" />
+                                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="form-group float-end">
+                                            <div class="form-outline mb-4">
+                                                <input type="submit" value="Create" class="btn btn-primary" /> |
+                                                <a asp-action="Index">Back to List</a>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                    <br /><br /><br />
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    </div>
+
+
+</body>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
