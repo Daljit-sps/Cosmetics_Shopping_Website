@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <a asp-action="Dashboard" class="navbar-brand  nav-padding"><img src="~/images/Glance_Cosmetics-removebg.png" alt="site-logo" class="logo-img"/>
+                    <a asp-controller="Users" asp-action="Dashboard" class="navbar-brand  nav-padding"><img src="~/images/Glance_Cosmetics-removebg.png" alt="site-logo" class="logo-img"/>
                         <span>&nbsp;Glance Cosmetics</span>
                     </a>
                     
@@ -63,9 +63,9 @@
                         <a class="nav-item nav-link" asp-controller="Users" asp-action="Login" data-mdb-toggle="tooltip" title="Login">
                             <i class="fa-regular fa-user fa-lg" ></i>
                         </a>
-                        <a class="nav-item nav-link" asp-controller="Users" asp-action="Login" data-mdb-toggle="tooltip" title="Login">
+                        <a class="nav-item nav-link" asp-controller="Home" asp-action="Cart" data-mdb-toggle="tooltip" title="Login">
                             <i class="fas fa-shopping-bag fa-lg" data-mdb-toggle="tooltip" title="Cart"></i>
-                            
+                            <span class="badge">100</span>
                         </a>
                     </div>
                 </div>
