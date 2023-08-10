@@ -28,7 +28,13 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Repositories
             _context = context;
 
         }
-       
+
+        public async Task<IQueryable<T>> GetFromMutlipleTableForPaginationBasedOnCondition<T>(int pageIndex, int pageSize, Expression<Func<T, bool>> filters, params Expression<Func<T, object>>[] includes) where T : class
+        {
+            IQueryable<T> query = _context.Set<T>();
+            query = includes.Aggregate(query, (current, includes) => current.Include(includes)).Where(filters).Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            return query;
+        }
         public async Task<IQueryable<T>> GetFromMutlipleTable<T>(params Expression<Func<T, object>>[] includes) where T : class
         {
             IQueryable<T> query = _context.Set<T>();
@@ -43,12 +49,6 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Repositories
             return query;
         }
 
-
-        //-----------------------------------------------------------------------
-
-       
-
-        //-------------------------------------------------------------------
         public async Task<T> GetByIdFromMultipleTable<T>(int id, params Expression<Func<T, object>>[] includes) where T : class
         {
             IQueryable<T> query = _context.Set<T>();
@@ -94,6 +94,39 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Repositories
             return await _context.Set<T>().Where(filters).FirstOrDefaultAsync();
         }
 
+        public async Task<T> GetByIdFromMultipleTableBasedOnCondition<T>(
+                                                int id,
+                                                     Expression<Func<T, bool>> condition,
+                                                            params Expression<Func<T, object>>[] includes) where T : class
+        {
+            IQueryable<T> query = _context.Set<T>();
+            query = includes.Aggregate(query, (current, include) => current.Include(include));
+
+            var idProperty = typeof(T).GetProperty("Id");
+            if (idProperty != null)
+            {
+                var parameter = Expression.Parameter(typeof(T), "x");
+                var idExpression = Expression.Property(parameter, idProperty);
+                var equalExpression = Expression.Equal(idExpression, Expression.Constant(id));
+                var lambdaExpression = Expression.Lambda<Func<T, bool>>(equalExpression, parameter);
+
+                query = query.Where(lambdaExpression);
+            }
+            else
+            {
+                throw new InvalidOperationException("Entity does not have an 'Id' property.");
+            }
+
+            if (condition != null)
+            {
+                query = query.Where(condition);
+            }
+
+            return await query.SingleOrDefaultAsync();
+        }
+
+        
+
         public async Task<T> GetById<T>(int id) where T : class
         {
             return await _context.Set<T>().FindAsync(id);
@@ -104,6 +137,8 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Repositories
             return await _context.Set<T>().ToListAsync();
         }
 
+
+
         public async Task<T> Post<T>(T entity) where T : class
         {
             await _context.Set<T>().AddAsync(entity);
@@ -111,12 +146,23 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Repositories
             return entity;
         }
 
-        public void Delete<T>(T entity) where T : class
+        public int Delete<T>(T entity) where T : class
         {
             _context.Set<T>().Remove(entity);
-            _context.SaveChanges();
+            return _context.SaveChanges();
 
         }
+
+
+        public int DeleteAllRowsOnCondition<T>(Expression<Func<T, bool>> filters) where T : class
+        {
+            var dataToDelete = _context.Set<T>().Where(filters).ToList();
+            _context.Set<T>().RemoveRange(dataToDelete);
+            return _context.SaveChanges();
+
+        }
+
+
 
         public async Task<T> Put<T>(T entity) where T : class
         {

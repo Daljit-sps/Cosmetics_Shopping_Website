@@ -3,13 +3,15 @@ using System.Collections.Generic;
 
 namespace Cosmetics_Shopping_Website.GenericPattern.Models;
 
-public partial class OrderItem
+public partial class ProductRating
 {
     public int Id { get; set; }
 
-    public int OrderId { get; set; }
+    public int UserId { get; set; }
 
-    public int UserAddressId { get; set; }
+    public int ProductVariantId { get; set; }
+
+    public decimal Rating { get; set; }
 
     public int CreatedBy { get; set; }
 
@@ -19,15 +21,7 @@ public partial class OrderItem
 
     public DateTime UpdatedOn { get; set; }
 
-    public bool IsDelete { get; set; }
-
-    public int ProductVariantId { get; set; }
-
-    public int Quantity { get; set; }
-
-    public virtual Order Order { get; set; } = null!;
-
     public virtual ProductVariant ProductVariant { get; set; } = null!;
 
-    public virtual UserAddress UserAddress { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

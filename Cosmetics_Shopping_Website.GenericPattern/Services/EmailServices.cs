@@ -25,7 +25,11 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
             emailMessage.From.Add(new MailboxAddress("email",_emailConfig.From));
             emailMessage.To.AddRange(message.To);
             emailMessage.Subject = message.Subject;
-            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
+            var bodyBuilder = new BodyBuilder();
+            bodyBuilder.HtmlBody = message.Content;
+
+            emailMessage.Body = bodyBuilder.ToMessageBody();
+            //emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
             return emailMessage;
         }
         private void Send(MimeMessage mailMessage)

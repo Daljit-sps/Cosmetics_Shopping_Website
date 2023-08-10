@@ -27,6 +27,12 @@ public partial class Order
 
     public bool IsDelete { get; set; }
 
+    public string? SessionId { get; set; }
+
+    public string? PaymentIntentId { get; set; }
+
+    public string? PaymentStatus { get; set; }
+
     public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
 
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();

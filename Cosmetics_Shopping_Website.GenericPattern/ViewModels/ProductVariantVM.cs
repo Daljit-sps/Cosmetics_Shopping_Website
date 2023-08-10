@@ -34,8 +34,11 @@ namespace Cosmetics_Shopping_Website.GenericPattern.ViewModels
         public decimal Price { get; set; }
         public string? Product { get; set; } 
         public string? VariantImage { get; set; } 
-
-        //public int WishlistId { get; set; }
+        public int SubCategoryId { get; set; }
+        public string? SubCategoryName { get; set; }
+        public int CategoryId { get; set; }
+        public string? CategoryName { get; set; }
+       
         public bool IsDelete { get; set; }
 
         public bool IsWishlisted { get; set; }

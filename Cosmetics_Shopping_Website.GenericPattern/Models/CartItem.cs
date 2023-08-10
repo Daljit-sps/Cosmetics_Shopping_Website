@@ -21,10 +21,6 @@ public partial class CartItem
 
     public DateTime UpdatedOn { get; set; }
 
-    public bool IsDelete { get; set; }
-
-    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
-
     public virtual ProductVariant ProductVariant { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;

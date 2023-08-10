@@ -29,8 +29,11 @@ public partial class ProductVariant
 
     public virtual ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
 
+    public virtual ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
+
     public virtual Product Product { get; set; } = null!;
-    
+
+    public virtual ICollection<ProductRating> ProductRatings { get; set; } = new List<ProductRating>();
 
     public virtual ICollection<ProductVariantsProperty> ProductVariantsProperties { get; set; } = new List<ProductVariantsProperty>();
 

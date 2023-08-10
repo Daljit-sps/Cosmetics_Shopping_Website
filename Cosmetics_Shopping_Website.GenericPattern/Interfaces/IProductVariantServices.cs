@@ -15,7 +15,15 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Interfaces
         Task<ProductVariantVM> CreateProductVariant(ProductVariantVM objProductVariantVM, int logedUser);
         Task<ProductVariantVM> GetProductVariantByIds(int id);
         Task<IEnumerable<ProductVariantVM>> GetAllProductVariants();
-      
+        Task<IEnumerable<ProductVariantVM>> GetAllProductVariantsBasedOnProductWithPagination(string condition, int pageIndex, int pageSize);
+        Task<IEnumerable<ProductVariantVM>> GetAllProductVariantsBasedOnSubCategoryOrCategoryWithPagination(string condition, int pageIndex, int pageSize);
+
+       
+
+        Task<IEnumerable<ProductVariantVM>> GetAllProductVariantsBasedOnProducts(string condition);
+
+        Task<IEnumerable<ProductVariantVM>> GetAllProductVariantsBasedOnSubCategoryOrCategory(string condition);
+
         Task<ProductVariantVM> PutProductVariant(ProductVariantVM objProductVariantVM, int logedUser);
 
         Task<bool> DeleteProductVariant(int id, int logedUser);

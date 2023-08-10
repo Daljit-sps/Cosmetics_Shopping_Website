@@ -11,8 +11,12 @@ namespace Cosmetics_Shopping_Website.GenericPattern.EmailConfig
         {
             To = new List<MailboxAddress>();
             To.AddRange(to.Select(x => new MailboxAddress("email",x)));
+
             Subject = subject;
             Content = content;
         }
+       
     }
+
+
 }

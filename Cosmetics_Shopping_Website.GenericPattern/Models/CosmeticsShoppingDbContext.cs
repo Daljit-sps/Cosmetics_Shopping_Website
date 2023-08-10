@@ -29,6 +29,8 @@ public partial class CosmeticsShoppingDbContext : DbContext
 
     public virtual DbSet<Product> Products { get; set; }
 
+    public virtual DbSet<ProductRating> ProductRatings { get; set; }
+
     public virtual DbSet<ProductVariant> ProductVariants { get; set; }
 
     public virtual DbSet<ProductVariantsProperty> ProductVariantsProperties { get; set; }
@@ -66,6 +68,7 @@ public partial class CosmeticsShoppingDbContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("Created_On");
             entity.Property(e => e.ProductVariantId).HasColumnName("ProductVariant_Id");
+            entity.Property(e => e.Quantity).HasDefaultValueSql("((1))");
             entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");
             entity.Property(e => e.UpdatedOn)
                 .HasColumnType("datetime")
@@ -141,6 +144,15 @@ public partial class CosmeticsShoppingDbContext : DbContext
                 .HasMaxLength(100)
                 .IsUnicode(false)
                 .HasColumnName("Order_Status");
+            entity.Property(e => e.PaymentIntentId)
+                .HasMaxLength(300)
+                .IsUnicode(false);
+            entity.Property(e => e.PaymentStatus)
+                .HasMaxLength(100)
+                .IsUnicode(false);
+            entity.Property(e => e.SessionId)
+                .HasMaxLength(300)
+                .IsUnicode(false);
             entity.Property(e => e.TotalPrice)
                 .HasColumnType("decimal(18, 0)")
                 .HasColumnName("Total_Price");
@@ -162,28 +174,27 @@ public partial class CosmeticsShoppingDbContext : DbContext
 
             entity.ToTable("Order_Items");
 
-            entity.Property(e => e.CartItemsId).HasColumnName("CartItems_Id");
             entity.Property(e => e.CreatedBy).HasColumnName("Created_By");
             entity.Property(e => e.CreatedOn)
                 .HasColumnType("datetime")
                 .HasColumnName("Created_On");
             entity.Property(e => e.OrderId).HasColumnName("Order_Id");
-            entity.Property(e => e.Price).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.ProductVariantId).HasColumnName("ProductVariant_Id");
             entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");
             entity.Property(e => e.UpdatedOn)
                 .HasColumnType("datetime")
                 .HasColumnName("Updated_On");
             entity.Property(e => e.UserAddressId).HasColumnName("UserAddress_Id");
 
-            entity.HasOne(d => d.CartItems).WithMany(p => p.OrderItems)
-                .HasForeignKey(d => d.CartItemsId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order_Ite__CartI__282DF8C2");
-
             entity.HasOne(d => d.Order).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.OrderId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Order_Ite__Order__2739D489");
+
+            entity.HasOne(d => d.ProductVariant).WithMany(p => p.OrderItems)
+                .HasForeignKey(d => d.ProductVariantId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__Order_Ite__Produ__52E34C9D");
 
             entity.HasOne(d => d.UserAddress).WithMany(p => p.OrderItems)
                 .HasForeignKey(d => d.UserAddressId)
@@ -248,6 +259,33 @@ public partial class CosmeticsShoppingDbContext : DbContext
                 .HasForeignKey(d => d.SubCategoryId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Products__Sub_Ca__6EF57B66");
+        });
+
+        modelBuilder.Entity<ProductRating>(entity =>
+        {
+            entity.HasKey(e => e.Id).HasName("PK__ProductR__3214EC070FBFCA55");
+
+            entity.ToTable("ProductRating");
+
+            entity.Property(e => e.CreatedBy).HasColumnName("Created_By");
+            entity.Property(e => e.CreatedOn)
+                .HasColumnType("datetime")
+                .HasColumnName("Created_On");
+            entity.Property(e => e.Rating).HasColumnType("decimal(18, 0)");
+            entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");
+            entity.Property(e => e.UpdatedOn)
+                .HasColumnType("datetime")
+                .HasColumnName("Updated_On");
+
+            entity.HasOne(d => d.ProductVariant).WithMany(p => p.ProductRatings)
+                .HasForeignKey(d => d.ProductVariantId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProductRa__Produ__7BE56230");
+
+            entity.HasOne(d => d.User).WithMany(p => p.ProductRatings)
+                .HasForeignKey(d => d.UserId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("FK__ProductRa__UserI__7AF13DF7");
         });
 
         modelBuilder.Entity<ProductVariant>(entity =>
@@ -458,7 +496,6 @@ public partial class CosmeticsShoppingDbContext : DbContext
             entity.Property(e => e.CreatedOn)
                 .HasColumnType("datetime")
                 .HasColumnName("Created_On");
-            entity.Property(e => e.IsShippingAddress).HasColumnName("IsShipping_Address");
             entity.Property(e => e.PostalCode).HasColumnName("Postal_Code");
             entity.Property(e => e.StateId).HasColumnName("State_Id");
             entity.Property(e => e.UpdatedBy).HasColumnName("Updated_By");

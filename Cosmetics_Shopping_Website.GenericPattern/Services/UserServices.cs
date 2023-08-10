@@ -169,21 +169,30 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
         {
             try
             {
-                User objUser = new();
-                if (objSignUp != null)
+                var getmail = await _genericRepository.Get<User>(e=>e.Email ==  objSignUp.Email && e.IsDelete == false);
+                if(getmail != null)
                 {
-                    objUser.FirstName = objSignUp.FirstName;
-                    objUser.LastName = objSignUp.LastName;
-                    objUser.MobileNumber = objSignUp.MobileNumber;
-                    objUser.Email = objSignUp.Email;
-                    objUser.Password = objSignUp.Password;
-                    objUser.CreatedOn = DateTime.Now;
-                    objUser.UpdatedOn = DateTime.Now;
-                    objUser.CreatedBy = objSignUp.UserId;
-                    objUser.UpdatedBy = objSignUp.UserId;
-                    await _genericRepository.Post(objUser);
-                    SignUpVM result = JsonConvert.DeserializeObject<SignUpVM>(JsonConvert.SerializeObject(objUser))!;
-                    return result;
+                    return null;
+                }
+                else
+                {
+                    User objUser = new();
+                    if (objSignUp != null)
+                    {
+                        objUser.FirstName = objSignUp.FirstName;
+                        objUser.LastName = objSignUp.LastName;
+                        objUser.MobileNumber = objSignUp.MobileNumber;
+                        objUser.Email = objSignUp.Email;
+                        objUser.Password = objSignUp.Password;
+                        objUser.CreatedOn = DateTime.Now;
+                        objUser.UpdatedOn = DateTime.Now;
+                        objUser.CreatedBy = objSignUp.UserId;
+                        objUser.UpdatedBy = objSignUp.UserId;
+                        await _genericRepository.Post(objUser);
+                        SignUpVM result = JsonConvert.DeserializeObject<SignUpVM>(JsonConvert.SerializeObject(objUser))!;
+                        return result;
+                    }
+
                 }
 
             }
@@ -206,7 +215,6 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
                     objUser.LastName = objPutUser.LastName;
                     objUser.MobileNumber = objPutUser.MobileNumber;
                     objUser.Email = objPutUser.Email;
-                    objUser.Password = objPutUser.Password;
                     objUser.UpdatedOn = DateTime.Now;
                     objUser.UpdatedBy = logedUserId;
 
