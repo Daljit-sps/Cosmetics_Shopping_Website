@@ -1,3 +1,5 @@
+using Cosmetics_Shopping_Website;
+using Cosmetics_Shopping_Website.Authorization;
 using Cosmetics_Shopping_Website.GenericPattern.EmailConfig;
 using Cosmetics_Shopping_Website.GenericPattern.Interfaces;
 using Cosmetics_Shopping_Website.GenericPattern.Models;
@@ -6,12 +8,17 @@ using Cosmetics_Shopping_Website.GenericPattern.Services;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Stripe;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 //database connection
 services.AddDbContext<CosmeticsShoppingDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("myconn")));
+
+//stripe
+services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
+
 
 //injecting dependency
 services.AddScoped(typeof(IGenericRepository), typeof(GenericRepository));
@@ -23,6 +30,9 @@ services.AddScoped(typeof(IProductServices), typeof(ProductServices));
 services.AddScoped(typeof(IProductVariantServices), typeof(ProductVariantServices));
 services.AddScoped(typeof(IVariantAvailabilityServices), typeof(VariantAvailabilityServices));
 services.AddScoped(typeof(IUserTaskServices), typeof(UserTaskServices));
+services.AddScoped(typeof(IPlacingOrderServices), typeof(PlacingOrderServices));
+services.AddScoped(typeof(IGetOrderServices), typeof(GetOrderServices));
+services.AddScoped(typeof(IViewRenderService), typeof(ViewRenderService));
 
 
 //adding session
@@ -38,18 +48,7 @@ var emailConfig = builder.Configuration
         .Get<EmailConfiguration>();
 services.AddSingleton(emailConfig);
 
-/*services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = "SessionAuthenticationScheme";
-    options.DefaultChallengeScheme = "SessionAuthenticationScheme";
-}).AddScheme<AuthenticationSchemeOptions, SessionAuthenticationHandler>("SessionAuthenticationScheme", null);
 
-services.AddAuthorization(options =>
-{
-    options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .Build();
-});*/
 
 
 
@@ -72,6 +71,10 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseSession();
+app.UseMiddleware<SessionAuthorizationMiddleware>();
+StripeConfiguration.ApiKey = builder.Configuration.GetSection("Stripe:SecretKey").Get<string>();
+
+
 
 app.UseAuthorization();
 
@@ -79,6 +82,5 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Users}/{action=Dashboard}");
-    /*pattern: "{controller=Users}/{action=Login}");*/
 
 app.Run();

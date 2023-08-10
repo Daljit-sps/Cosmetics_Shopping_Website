@@ -17,94 +17,230 @@
 
                 <div class="carousel-inner">
                     <div class="carousel-item active">
-                        <img src="~/images/HomeCarousel1.png" class="d-block w-100 carousel-image" alt="Image 1">
-                        <div class="carousel-caption d-none d-md-block text-black">
-                            <a asp-controller="Products" asp-action="Index" class="text-muted">View Products</a>
-                        </div>
-
+                        <a asp-controller ="Home" asp-action="ProductLists" asp-route-condition="Eyeshadow Palettes"><img src="~/images/image.webp" class=" w-100 carousel-image" alt="Image 1"></a>
                     </div>
                     <div class="carousel-item">
-                        <img src="/images/Page_carousel2.png" class="d-block w-100 carousel-image" alt="Image 2">
-                        <div class="carousel-caption d-none d-md-block text-black">
-                            <a asp-controller="ProductVariants" asp-action="Index" class="text-muted ps-2 float-start">View Product-Variants</a>
-                        </div>
+                        <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Eyeliner">
+                            <img src="~/images/image2.jpg" class="d-block w-100 carousel-image" alt="Image 2">
+                        </a>
+                       
                     </div>
                     <div class="carousel-item">
-                        <img src="~/images/Page_carousel3.png" class="d-block w-100 carousel-image" alt="Image 3">
-                        <div class="carousel-caption d-none d-md-block text-black">
-                            <a asp-controller="Categories" asp-action="Index" class="text-muted ps-2 float-start">View Categories</a>
-                        </div>
+                        <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Lipsticks">
+                            <img src="~/images/image3.webp" class="d-block w-100 carousel-image" alt="Image 3">
+                        </a>
+                       
                     </div>
                 </div>
                 
             </div>
         </div>
     </div>
-    <div class="row mx-0">
-        @foreach (var item in Model)
-        {
-            <div class="col-md-4 mt-5 p-5">
-                <div class="card me-4 rounded" onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {@item.Id })'">
-                    <a asp-action="Details" asp-route-id="@item.Id"><img src="~/images/@item.VariantImage" class="card-img-top w-50 mx-auto d-block" alt="card"></a>
+    <div class="w-100 px-5 mt-3 text-center"><h1>CATEGORIES</h1><h5 class="text-muted">Here's what we offer!</h5></div>
+    <div class="px-5 mt-3">
+        <div class="row">
+            <div class="col-3 text-center">
+                <div class="category rounded-circle overflow-hidden mx-auto  d-flex justify-content-center align-items-center" style="width: 200px; height:200px;">
+                    <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Makeup">
+                        <img class="w-100 img-fluid" src="~/images/makeup_category_home.jpg" alt="category">
+                    </a>
+                   
+                </div>
+                <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Makeup" class="text-black nav_link"><h4 class="mt-4">Makeup</h4></a>
+            </div>
+            <div class="col-3 text-center">
+                <div class="category rounded-circle overflow-hidden mx-auto  d-flex justify-content-center align-items-center" style="width: 200px; height: 200px;">
+                    <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Face Care">
+                        <img class="w-100 h-100 img-fluid" src="~/images/face-care-category.jpg" alt="category">
+                    </a>
                     
-                    <div class="card-img-overlay align-items-center justify-content-center">
-                        <h5 class="card-title">Makeup</h5>
-                        <div class=" border border-dark rounded w-25  justify-content-center"><small class="card-text">Shop Now</small></div>
+                  
+                </div>
+                <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Face Care" class="text-black nav_link"><h4 class="mt-4">Face Care</h4></a>
+            </div>
+            <div class="col-3 text-center">
+                <div class="category rounded-circle overflow-hidden mx-auto  d-flex justify-content-center align-items-center" style="width: 200px; height: 200px;">
+                    <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Body Care">
+                        <img class="w-100 h-100 img-fluid" src="~/images/skin-category.jpg" alt="category">
+                    </a>
+                   
+                </div>
+                <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Body Care" class="text-black nav_link"><h4 class="mt-4">Body Care</h4></a>
+            </div>
+            <div class="col-3 text-center">
+                <div class="category rounded-circle overflow-hidden mx-auto  d-flex justify-content-center align-items-center" style="width: 200px; height: 200px;">
+                    <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Fragrance">
+                        <img class="w-100 h-100 img-fluid" src="~/images/fragrance-category.jpg" alt="category">
+                    </a>
+                   
+                </div>
+                <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Fragrance" class="text-black nav_link"><h4 class="mt-4">Fragrance</h4></a>
+            </div>
+        </div>
+    </div>
+    <div class="px-5 mt-5">
+        <div class="row p-0 mx-0">
+            <div class="col px-0">
+                <div class="bbb_main_container p-0">
+                    <div class="bbb_viewed_title_container">
+                        <h3 class="bbb_viewed_title">Products<span class="float-end"><i class="fas fa-chevron-left me-3 bbb_viewed_nav bbb_viewed_prev"></i><i class="fas fa-chevron-right bbb_viewed_nav bbb_viewed_next"></i></span> </h3>
+                    </div>
+
+                    <div class="bbb_viewed_slider_container">
+                        <div class="owl-carousel owl-theme bbb_viewed_slider">
+                            @foreach (var item in Model)
+                            {
+                                <div class="owl-item mt-0 me-3">
+
+                                    <div class="card bbb_viewed_item discount d-flex flex-column align-items-center justify-content-center text-center">
+                                        <div class="mt-5">
+                                            <img src="~/images/@item.VariantImage" class="card-img-top w-100 mx-auto d-block" alt="card" onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {id =@item.Id })'">
+                                        </div>
+                                        <div class="card-body text-center">
+                                            <h5 class="card-title mb-3">@item.VariantName</h5>
+                                            <h6 class="mb-3">Price: Rs.@item.Price</h6>
+                                            <div class="buttons d-flex flex-row mt-2 gap-3 mb-4">
+                                                <a onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {@item.Id })'" class="btn btn-outline-dark">View</a>
+                                                <a data-id="@item.Id" class="btn btn-dark addItemToCart">Add to Basket</a>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                </div>
+
+
+
+
+                            }
+
+
+                        </div>
                     </div>
                 </div>
             </div>
-          
-        }
-    </div>
-    <div class="card-group mt-5 p-5">
-        <div class="card me-4 rounded">
-            <a asp-controller="Home" asp-action="Product_Details_for_Customer" asp-route-id="2"><img src="~/images/lipsticks-card.jpg" class="card-img-top" alt="card"></a>
-
-        </div>
-        <div class="card me-4 rounded border-start border-3">
-            <br /><br />
-            <div class="card-body p-5 justify-content-center">
-                <h2 class="card-title"> 6 Beautiful Matte Shades </h2>
-                <p class="card-text">Matte lipstick is a highly pigmented lip product with a shine-free, velvety finish</p>
-                <div class=" border border-dark rounded w-25  justify-content-center"><a href="#" class="shop-now-button text-black"><small class="card-text">Shop Now</small></a></div>
-            </div>
-        </div>
-        <div class="card rounded">
-            <a href="#"><img src="~/images/lipsticks-card2.jpg" class="card-img-top" alt="card"></a>
 
         </div>
     </div>
 
     <div class="container-fluid mt-5 px-5">
-        <a asp-action="Details"><img src="~/images/card-3-homepage.png" class="d-block w-100"/></a>
+        <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Face Care"><img src="~/images/card-3-homepage.png" class="d-block w-100" /></a>
     </div>
 
     <div class="card-group mt-5 p-5">
         <div class="card me-4 rounded">
-            <img src="https://cdn.shopify.com/s/files/1/0979/5386/products/Untitleddesign-2022-04-21T131509.272_2000x.png?v=1686324860" class="card-img-top" alt="makeup-card">
-            <div class="card-img-overlay align-items-center justify-content-center">
-                <h5 class="card-title">Makeup</h5>
-                <div class=" border border-dark rounded w-25  justify-content-center"><small class="card-text">Shop Now</small></div>
-            </div>
+            <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Lipsticks"><img src="~/images/lipsticks-card.jpg" class="card-img-top" alt="card"></a>
+
         </div>
-        <div class="card me-4 rounded">
-            <img src="~/images/card-scrub-homepage.jpg" class="card-img-top" alt="bodycare-card">
-            <div class="card-img-overlay align-items-center justify-content-center">
-                <h5 class="card-title">Body Care</h5>
-                <div class=" border border-dark rounded w-25  justify-content-center"><small class="card-text">Shop Now</small></div>
+        <div class="card me-4 rounded border-start border-3">
+            <br /><br />
+            <div class="card-body p-5 justify-content-center align-items-center">
+                <h2 class="card-title"> Beautiful Matte Shades </h2>
+                <p class="card-text">Matte lipstick is a highly pigmented lip product with a shine-free, velvety finish</p>
+                <div class=" border border-dark rounded w-25  justify-content-center" style="margin-left:100px;"><a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Lipsticks" class="shop-now-button text-black"><small class="card-text text-center ps-1">Shop Now</small></a></div>
             </div>
         </div>
         <div class="card rounded">
-            <img src="https://image.harrods.com/lancome-idole-eau-de-parfum-75ml_14823474_43345282_2048.jpg" class="card-img-top" alt="fragrance-card" style="height:407px">
-            <div class="card-img-overlay align-items-center justify-content-center">
-                <h5 class="card-title">Fragrance</h5>
-                <div class=" border border-dark rounded w-25  justify-content-center"><small class="card-text ">Shop Now</small></div>
-            </div>
+            <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Lipsticks"><img src="~/images/lipsticks-card2.jpg" class="card-img-top" alt="card"></a>
+
         </div>
     </div>
-    <div class="container-fluid mt-5 mx-0 p-0" onclick="location.href='@Url.Action("List_of_Lipgloss", "Home")'">
-        <img src="~/images/lipgloss-card-homepage.png" class="d-block w-100" alt="lipgloss-card" />
+
+    <div class="container-fluid mt-5 mx-0 p-0">
+        <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Lip gloss">
+            <img src="~/images/lipgloss-card-homepage.png" class="d-block w-100" alt="lipgloss-card" />
+        </a>
     </div>
    
+   @section scripts{
+       <script>
+
+            $(document).ready(function () {
+                
+                $('.addItemToCart').click(function () {
+                    var variantId = $(this).data('id');
+                    var q = 1;
+                    $.ajax({
+                        url: '@Url.Action("AddToCart", "Home")',
+                        data: { productVariantId: variantId, quantity: q },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully added to your Cart!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(res => { location.reload(); });
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while adding the item to your Cart.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+
+                    });
+
+                });
+
+                if ($('.bbb_viewed_slider').length) {
+                    var viewedSlider = $('.bbb_viewed_slider');
+
+                    viewedSlider.owlCarousel(
+                        {
+                            loop: true,
+                            margin: 30,
+                            autoplay: true,
+                            autoplayTimeout: 3000,
+                            nav: false,
+                            dots: false,
+                            responsive:
+                            {
+                                0: { items: 1 },
+                                575: { items: 2 },
+                                768: { items: 3 },
+                               
+                            }
+                        });
+
+                    if ($('.bbb_viewed_prev').length) {
+                        var prev = $('.bbb_viewed_prev');
+                        prev.on('click', function () {
+                            viewedSlider.trigger('prev.owl.carousel');
+                        });
+                    }
+
+                    if ($('.bbb_viewed_next').length) {
+                        var next = $('.bbb_viewed_next');
+                        next.on('click', function () {
+                            viewedSlider.trigger('next.owl.carousel');
+                        });
+                    }
+                }
+
+
+
+            });
+
+            
+            
+
+        </script>
+    }
+
+           
+       </script>
+   }
 </body>
 

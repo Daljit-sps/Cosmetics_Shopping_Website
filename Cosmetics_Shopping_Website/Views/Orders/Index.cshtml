@@ -1,0 +1,166 @@
+﻿@model IEnumerable<Cosmetics_Shopping_Website.GenericPattern.ViewModels.Order_Items_PaymentVM>
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Index";
+}
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid my-5">
+
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12  mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+                                <div>
+
+                                    <h4 class="mb-0 float-start">Orders</h4>
+
+                                </div>
+                                <br />
+                            </div>
+                            <!-- table  -->
+                            <div class="table-responsive">
+                                <br />
+                                <table class="table text-nowrap mt-4" id="table_list">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th> @Html.DisplayNameFor(model => model.UserName)</th>
+                                            <th> @Html.DisplayNameFor(model => model.TotalPrice)</th>
+                                            <th> @Html.DisplayNameFor(model => model.PaymentStatus)</th>
+                                            <th> @Html.DisplayNameFor(model => model.OrderStatus)</th>
+                                            
+                                            <th> Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.UserName)
+                                                </td>
+                                                <td>
+                                                    <p>Rs.@Html.DisplayFor(modelItem => item.TotalPrice)</p>
+                                                </td>
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.PaymentStatus)
+                                                </td>
+
+                                                <td>
+                                                    @Html.DisplayFor(modelItem => item.OrderStatus)
+                                                    <a id="dropdownMenuButton-@item.OrderId" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <i class="fas fa-edit" data-mdb-toggle="tooltip" title="Update Order Status"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton-@item.OrderId">
+                                                        <a class="dropdown-item" href="#" onclick="updateOrderStatus(@item.OrderId, 'Approved')">Approved</a>
+                                                        <a class="dropdown-item" href="#" onclick="updateOrderStatus(@item.OrderId, 'Order Packed')">Order Packed</a>
+                                                        <a class="dropdown-item" href="#" onclick="updateOrderStatus(@item.OrderId, 'Shipped')">Shipped</a>
+                                                        <a class="dropdown-item" href="#" onclick="updateOrderStatus(@item.OrderId, 'Delivered')">Delivered</a>
+                                                    </div>
+                                                    
+                                                </td>
+
+                                                <td>
+                                                        
+                                                      
+                                                   
+                                                    <a asp-action="Details" asp-route-id="@item.OrderId"><i class="fa fa-info-circle" aria-hidden="true" data-mdb-toggle="tooltip" title="View Details"></i></a>
+                                                    <a class="delete-icon" data-id="@item.OrderId"><i class="fa fa-trash" aria-hidden="true" data-mdb-toggle="tooltip" title="Delete"></i></a>
+                                                </td>
+                                            </tr>
+                                            
+
+                                        }
+                                    </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    @section scripts{
+        <script>
+
+            $(document).ready(function () {
+                $('#table_list').DataTable();
+
+                $('.delete-icon').click(function () {
+                    var itemId = $(this).data('id');
+
+                    Swal.fire({
+                        title: 'Confirm Delete',
+                        text: 'Are you sure you want to delete this item?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#d33',
+                        cancelButtonColor: '#3085d6',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // AJAX call to delete action
+                            $.ajax({
+                                url: '@Url.Action("DeleteConfirmed", "Orders")',
+                                data: { id: itemId },
+                                type: 'POST',
+                                success: function () {
+                                    // Optionally show success message
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Success',
+                                        text: 'Item has been deleted successfully!',
+                                        confirmButtonColor: '#28a745'
+                                    }).then(function () {
+                                        // Reload the page
+                                        location.reload();
+                                    });
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Error',
+                                        text: 'An error occurred while deleting the item.',
+                                        confirmButtonColor: '#d33'
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
+            function updateOrderStatus(orderId, newStatus) {
+                // Call the controller action to update order status
+                $.ajax({
+                    type: 'POST',
+                    url: '@Url.Action("UpdateOrderStatus", "Orders")',
+                    data: { OrderId: orderId, OrderStatus: newStatus },
+                    success: function () {
+                        location.reload();
+                    },
+                    error: function () {
+                        alert('Error updating order status.');
+                    }
+                });
+            }
+
+            
+        </script>
+    }
+
+
+</body>

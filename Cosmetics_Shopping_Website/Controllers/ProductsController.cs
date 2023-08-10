@@ -31,6 +31,7 @@ namespace Cosmetics_Shopping_Website.Controllers
             ViewBag.DropDownDataForSubCategory = selectListForSubCategory;
             return View();
         }
+
         [HttpPost]
         public async Task<ActionResult<ProductVM>> Create(string ProductName, int CategoryId, int SubCategoryId)
         {
@@ -58,6 +59,7 @@ namespace Cosmetics_Shopping_Website.Controllers
                 return View("Error");
             }
         }
+        
         //Index
         public async Task<IActionResult> Index()
         {
@@ -71,6 +73,7 @@ namespace Cosmetics_Shopping_Website.Controllers
                 return View("Error");
             }
         }
+        
         //Details of particular product
         public async Task<IActionResult> Details(int id)
         {
@@ -84,6 +87,7 @@ namespace Cosmetics_Shopping_Website.Controllers
                 return View("Error");
             }
         }
+        
         //Edit
         public async Task<IActionResult> Edit(int id)
         {
@@ -107,6 +111,7 @@ namespace Cosmetics_Shopping_Website.Controllers
                 return View("Error");
             }
         }
+        
         [HttpPost]
         public async Task<IActionResult> Edit(int Id, string ProductName, int CategoryId, int SubCategoryId)
         {
@@ -130,8 +135,8 @@ namespace Cosmetics_Shopping_Website.Controllers
                 return View(ex);
             }
         }
+       
         //Delete
-      
         public async Task<IActionResult> DeleteConfirmed(int Id)
         {
             try

@@ -1,0 +1,169 @@
+﻿@model IEnumerable<Cosmetics_Shopping_Website.GenericPattern.ViewModels.ProductVariantVM>
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Products List";
+
+}
+
+<body class="mb-0">
+    <div class="space bg-transparent"></div>
+    <div class="wrapper mt-5 pt-2">
+        @if (ViewBag.SearchMsg == null)
+        {
+            <div class="container">
+
+                <h3>Result of Searched Item: @ViewBag.SearchText</h3>
+                <hr />
+                <div class="row g-1">
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-3 mb-3">
+
+                            <div class="card p-3 me-4 produtlist_card h-100">
+
+                                <div class="text-center">
+
+                                    <a onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {id = @item.Id })'">
+                                        <img src="~/images/@item.VariantImage" width="200">
+                                    </a>
+
+                                </div>
+
+                                <div class="product-details">
+
+                                    <span class="fw-bold">@item.VariantName</span>
+
+                                    <div>
+                                        <h6 class="font-weight-bold d-block text-muted mt-2">
+                                            Price: Rs.@item.Price <span>
+                                                @if (item.IsWishlisted)
+                                                {
+                                                    <i class="fa-solid fa-heart float-end removeItemFromWishlist" data-id="@item.Id" style="color: #f4101c;" data-mdb-toggle="tooltip" title="Wishlist"></i>
+
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-regular fa-heart float-end addItemToWishlist" data-id="@item.Id" data-mdb-toggle="tooltip" title="Wishlist"></i>
+                                                }
+                                            </span>
+                                        </h6>
+
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+            <div class="m-5 px-5">
+                <h3>View Also</h3>
+                <hr />
+                <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Eyeshadow Palettes"><img class="img-fluid" src="~/images/side-banner.webp" alt="prduct-banner" /></a>
+            </div>
+        }
+        else
+        {
+            <div class="container justify-content-center align-items-center w-100 h-100 text-center">
+                <img src="~/images/search-not-found.png" alt="not found image">
+                <h3 class="mt-3">@ViewBag.SearchMsg</h3>
+                <a asp-controller="Users" asp-action="Dashboard" class="btn btn-primary mt-3">Back to Homepage</a>
+                
+
+            </div>
+            <div class="space bg-transparent"></div>
+            <div class="space bg-transparent"></div>
+        }
+
+
+    </div>
+    
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+
+                $('.addItemToWishlist').click(function () {
+                    var variantId = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("WishlistItem", "Home")',
+                        data: { productVariantId: variantId },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully added to your Wishlist!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(() => {
+                                    setTimeout(function () {
+                                        location.reload(true);
+                                    }, 100);
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while adding the item to your Cart.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+
+                    });
+                });
+
+                $('.removeItemFromWishlist').click(function () {
+                    var variantId = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("WishlistItem", "Home")',
+                        data: { productVariantId: variantId },
+                        success: function (response) {
+                            if (response.success == false) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully removed to your Wishlist!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(res => { location.reload(); });
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while removing the item from your Wishlist.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+                    });
+                });
+            });
+
+
+
+        </script>
+    }
+</body>
+

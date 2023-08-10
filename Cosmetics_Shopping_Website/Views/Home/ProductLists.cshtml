@@ -1,0 +1,227 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.ProductListViewModel
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Products List";
+
+}
+
+<body class="mb-0">
+    <div class="space bg-transparent"></div>
+    <div class="wrapper mt-5 pt-2">
+        <div class="container">
+            @if (ViewBag.ProductName != null)
+            {
+                <h1>@ViewBag.ProductName</h1>
+            }
+            else
+            {
+                <h1>@ViewBag.Name</h1>
+            }
+            <hr />
+            <div class="row g-1">
+
+                @foreach(var item in Model.Products)
+                {
+                    <div class="col-md-3 mb-3">
+
+                        <div class="card p-3 me-4 produtlist_card h-100">
+
+                            <div class="text-center">
+
+                                <a onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {@item.Id })'">
+                                    <img src="~/images/@item.VariantImage" width="200"></a>
+
+                            </div>
+
+                            <div class="product-details">
+
+                                <span class="fw-bold">@item.VariantName</span>
+                                
+                                    <div>
+                                        <h6 class="font-weight-bold d-block text-muted mt-2">Price: Rs.@item.Price <span>
+                                                @if (item.IsWishlisted)
+                                                {
+                                                    <i class="fa-solid fa-heart float-end removeItemFromWishlist" data-id="@item.Id" style="color: #f4101c;" data-mdb-toggle="tooltip" title="Wishlist"></i>
+
+                                                }
+                                                else
+                                                {
+                                                    <i class="fa-regular fa-heart float-end addItemToWishlist" data-id="@item.Id" data-mdb-toggle="tooltip" title="Wishlist"></i>
+                                                }
+                                            </span>
+                                        </h6>
+                                        
+                                    </div> 
+                                   
+                                
+                            </div>
+                        </div>
+                    </div>
+                }
+                <nav aria-label="Page navigation">
+                    <ul class="pagination float-end me-4">
+                        @if (ViewBag.ProductName != null)
+                        {
+                            <li class="page-item mt-1 py-1 px-2 border bg-white">
+                                Page >>
+                            </li>
+                            @for (int i = 1; i <= Math.Ceiling((double)Model.TotalCount / Model.PageSize); i++)
+                            {
+                                
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("ProductLists", new {condition=@ViewBag.ProductName, page = i, pageSize = Model.PageSize })">@i</a>
+                                </li>
+                                
+                            }
+                           
+                            
+                        }
+                        else
+                        {
+                            <li class="page-item mt-1 py-1 px-2 border bg-white">
+                                Page >>
+                            </li>
+                            @for (int i = 1; i <= Math.Ceiling((double)Model.TotalCount / Model.PageSize); i++)
+                            {
+                                
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "") mt-1">
+                                    <a class="page-link" href="@Url.Action("ProductLists", new {condition=@ViewBag.Name, page = i, pageSize = Model.PageSize })">@i</a>
+                                </li>
+                            }
+                           
+                        }
+                       
+                    </ul>
+                </nav>
+
+            </div>
+
+        </div>
+
+
+    </div>
+    <div class="m-5 px-5">
+        <h1>View Also</h1>
+        <hr />
+        <a asp-controller="Home" asp-action="ProductLists" asp-route-condition="Eyeshadow Palettes"><img class="img-fluid" src="~/images/side-banner.webp" alt="prduct-banner" /></a>
+    </div>
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+                $('.addItemToCart').click(function () {
+                    var variantId = $(this).data('id');
+                    var q = 1;
+                    $.ajax({
+                        url: '@Url.Action("AddToCart", "Home")',
+                        data: { productVariantId: variantId, quantity: q },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully added to your Cart!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(res => { location.reload(); });
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while adding the item to your Cart.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+
+                    });
+
+                });
+
+                $('.addItemToWishlist').click(function () {
+                    var variantId = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("WishlistItem", "Home")',
+                        data: { productVariantId: variantId },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully added to your Wishlist!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(() => {
+                                    setTimeout(function () {
+                                        location.reload(true);
+                                    }, 100);
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while adding the item to your Cart.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+
+                    });
+                });
+
+                $('.removeItemFromWishlist').click(function () {
+                    var variantId = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("WishlistItem", "Home")',
+                        data: { productVariantId: variantId },
+                        success: function (response) {
+                            if(response.success == false){
+                                Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Item has been successfully removed to your Wishlist!',
+                                confirmButtonColor: '#28a745'
+                            }).then(res => { location.reload(); });
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                            
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while removing the item from your Wishlist.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+                    });
+                });
+            });
+
+
+
+        </script>
+    }
+</body>
+

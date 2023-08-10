@@ -17,6 +17,12 @@
                             </div>
                             <div class="col-md-6 col-lg-7 d-flex align-items-center ">
                                 <div class="card-body  text-black  ">
+                                    <div>
+                                        @if (ViewData["Message"] != null)
+                                        {
+                                            <h6 class="text-danger">@ViewData["Message"]</h6>
+                                        }
+                                    </div>
 
                                     <form asp-action="SignUp">
                                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>

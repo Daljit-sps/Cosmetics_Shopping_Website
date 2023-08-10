@@ -7,59 +7,132 @@
 }
 
 <body class="mb-0">
-    <div class="text-center text-uppercase mt-5 p-5"><h3>wishlist</h3></div>
-    <div class=" row my-5 mx-0 p-5 justify-content-center">
-        @if (ViewData["wishlist"] != null)
-        {
-            <div class="text-center">
-                <h5 class="text-black">@ViewData["wishlist"]</h5>
-                
-            </div>
-            
-        }
-        else
-        {
+   
+    @if (ViewData["wishlist"] != null)
+    {
+        <div class="text-center text-uppercase mt-5 pt-5 px-5"><h3>wishlist</h3></div>
+        <div class="text-center mt-0 pt-0">
+            <img src="~/images/empty-wishlist2.png" alt="empty-wishlist" class="w-50">
+            <h5 class="text-black">@ViewData["wishlist"]</h5>
+            <a asp-controller="Users" asp-action="HomePage" class="btn btn-outline-dark w-50 mt-4">Continue Shopping</a>
+        </div>
+
+    }
+    else
+    {
+        <div class="text-center text-uppercase mt-5 p-5"><h3>wishlist</h3></div>
+        <div class=" row my-5 mx-0 px-5 justify-content-center">
             @foreach (var item in Model)
             {
-                <div class="col-md-4 m-0 p-0">
-                    <div class="card me-4 rounded" onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {@item.Id })'">
-                        <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
-                             data-mdb-ripple-color="light">
-                            <img src="~/images/@item.VariantImage" class="card-img-top w-100 mx-auto d-block" alt="card">
-                            <a href="#">
-                                <div class="hover-overlay">
-                                    <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                                </div>
-                            </a>
+                <div class="col-md-3 m-0 p-0">
+                    <div class="card shadow-lg me-4 rounded">
+                        <div class="bg-image">
+                            <img src="~/images/@item.VariantImage" class="card-img-top w-100 mx-auto d-block" alt="card" onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {id =@item.ProductVariantId })'">
+
                         </div>
                         <div class="card-body">
                             <h5 class="card-title mb-3">@item.VariantName</h5>
                             <h6 class="mb-3">Price: Rs.@item.Price</h6>
                             <div class="buttons d-flex flex-row mt-2 gap-3">
-                                <a onclick="location.href='@Url.Action("WishlistItem", "Home", new {@item.ProductVariantId })'" class="btn btn-outline-dark">Remove</a>
-                                <a class="btn btn-dark">Add to Basket</a>
+                                <a class="btn btn-outline-dark removeItemFromWishlist" data-id="@item.ProductVariantId">Remove</a>
+                                <a class="btn btn-dark addItemToCart" data-id="@item.ProductVariantId">Add to Basket</a>
                             </div>
                         </div>
                     </div>
                 </div>
-                    @*<div class="card me-4 rounded" onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {@item.Id })'">
-                        <a asp-action="Details" asp-route-id="@item.Id"><img src="~/images/@item.VariantImage" class="card-img-top w-50 mx-auto d-block" alt="card"></a>
 
-                        <div class="card-img-overlay align-items-center justify-content-center">
-                            <h5 class="card-title">Makeup</h5>
-                            <div class=" border border-dark rounded w-25  justify-content-center"><small class="card-text">Shop Now</small></div>
-                        </div>
-                    </div>*@
-                
 
             }
-            
-        }
-        <a asp-controller="Users" asp-action="HomePage" class="btn btn-outline-dark w-50 mt-4">Continue Shopping</a>
-    </div>
-    <div class="space bg-transparent"></div>
-    
+            <div class="row justify-content-center">
+                <a asp-controller="Users" asp-action="HomePage" class="btn btn-outline-dark w-50 mt-4">Continue Shopping</a>
+            </div>
+        </div>
+        
 
+    }
     
+    <div class="space bg-transparent"></div>
+
+    @section scripts {
+        <script>
+            $(document).ready(function () {
+                $('.removeItemFromWishlist').click(function () {
+                    var variantId = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("WishlistItem", "Home")',
+                        data: { productVariantId: variantId },
+                        success: function (response) {
+                            if (response.success == false) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully removed to your Wishlist!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(res => { location.reload(); });
+                            }
+                            else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while removing the item from your Wishlist.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+                    });
+                });
+
+                $('.addItemToCart').click(function () {
+                    var variantId = $(this).data('id');
+                    var q = 1;
+                    $.ajax({
+                        url: '@Url.Action("AddToCart", "Home")',
+                        data: { productVariantId: variantId, quantity: q },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully added to your Cart!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(res => { location.reload(); });
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while adding the item to your Cart.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+
+                    });
+
+                });
+            });
+
+
+
+        </script>
+    }
+
 
 </body>

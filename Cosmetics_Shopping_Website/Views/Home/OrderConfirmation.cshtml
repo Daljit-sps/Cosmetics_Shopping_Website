@@ -1,0 +1,63 @@
+﻿@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Order Confirmation";
+}
+
+<body class="mb-0">
+    <div class="modal fade" id="forgotpasswordModal" tabindex="-1" aria-labelledby="forgotpasswordModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content" style="border-radius: 1rem; background-color: #f9f5f2; ">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="forgotpasswordModalLabel">Forgot Password?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Enter the email address used for your account below and we will send you a link to reset your password.</p>
+                    
+
+                        <div class="form-group float-end">
+                            <div class="form-outline mb-4">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <input type="submit" value="Send Request" class="btn btn-primary" />
+                            </div>
+                        </div>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title w-100" id="confirmationModalLabel">Congratulations!</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>Your order has been placed. Check your email for details.</p>
+                    <div class="float-end">
+                        <div class="mb-4">
+                            <a asp-controller="Users" asp-action="Dashboard" class="btn btn-dark btn-block" data-dismiss="modal">OK</a>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('#confirmationModal').modal('show');
+            });
+
+        
+            setTimeout(function () {
+                window.location.href = '@Url.Action("Dashboard","Users")';
+            }, 5000);
+        </script>
+    }
+</body>
+
+

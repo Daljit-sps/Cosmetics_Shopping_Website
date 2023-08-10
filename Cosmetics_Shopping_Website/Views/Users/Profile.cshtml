@@ -1,0 +1,240 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.GetUserVM
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Profile";
+}
+<body class="mb-0">
+    <div class="space bg-transparent"></div>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center h-100">
+                <div class="col-lg-4 px-0">
+                    <div class="card" style="border-radius: 15px; background-color:#e6a9b0;">
+                        <div class="card-body py-4 px-0">
+                            <a class="nav-logo" asp-area="" asp-controller="Home" asp-action="Index"><img alt="Logo" src="~/images/Glance Cosmetics.png" class="img-fluid w-75 ms-lg-5 ps-2"></a>
+                            <h3 class="ms-lg-5 ps-lg-5">Hello, @Model.FirstName @Model.LastName </h3>
+                            <hr />
+                            <div class="text-center">
+                                <a asp-controller="Home" asp-action="Wishlist" class="nav_link text-black"><i class="fa-solid fa-heart fa-lg"></i> <span class="nav_name">Wishlist</span> </a><br />
+                            </div>
+                            <hr />
+                            <div class="text-center">
+                                <a asp-controller="Home" asp-action="Cart" class="nav_link text-black"><i class="fas fa-shopping-bag fa-lg"></i> <span class="nav_name">My Cart</span> </a><br />
+
+                            </div>
+                            <hr />
+                            <div class="text-center">
+                                <a asp-controller="Home" asp-action="UserOrders" class="nav_link text-black"><i class="fa-solid fa-clone"></i> <span class="nav_name">My Orders</span> </a><br /></li>
+                            </div>
+                            <hr />
+                            <div class="text-center">
+                                <a href='javascript:history.go(-1)' class="nav_link text-black">
+                                    <i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8">
+                    <div class="card float-start w-100" style="border-radius: 15px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex text-black">
+                                <div class="flex-grow-1 ms-3">
+                                    <h4>Profile Details<a href="#" class="text-black" data-bs-toggle="modal" data-bs-target="#editprofileModal"><i class="fas fa-edit float-end" data-mdb-toggle="tooltip" title="Edit Profile"></i></a></h4><hr />
+                                    <div class="row">
+                                        <div class="col-lg-6 me-0">
+                                            <h6 class="mb-2 pb-1">Full Name</h6>
+                                            <h6 class="mb-2 pb-1">Mobile Number</h6>
+                                            <h6 class="mb-2 pb-1">Email</h6>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <p class="mb-1 pb-1" style="color: #2b2a2a;">@Model.FirstName @Model.LastName</p>
+                                            <p class="mb-1 pb-1" style="color: #2b2a2a;">@Model.MobileNumber</p>
+                                            <p class="mb-1 pb-1" style="color: #2b2a2a;">@Model.Email</p>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="buttons d-flex flex-row mt-2 gap-3 float-end">
+                                        <a href="#" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#resetpasswordModal">Reset Password</a>
+                                        <a asp-controller="Users" asp-action="LogOut" class="btn btn-dark addItemToCart">LogOut</a>
+                                    </div>
+                                    <!-- Reset Password Modal -->
+                                    <div class="modal fade" id="resetpasswordModal" tabindex="-1" aria-labelledby="resetpasswordModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content" style="border-radius: 1rem; background-color: #f9f5f2; ">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="resetpasswordModalLabel">Reset Password</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Enter the email address used for your account below and we will send you a link to reset your password.</p>
+                                                    <form asp-controller="Users" asp-action="ForgetPassword">
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <div class="form-group">
+                                                            <div class="form-outline mb-4">
+                                                                <label asp-for="Email" class="control-label"></label>
+                                                                <input asp-for="Email" class="form-control" />
+                                                                <span asp-validation-for="Email" class="text-danger"></span>
+                                                            </div>
+
+                                                        </div>
+
+                                                        <div class="form-group float-end">
+                                                            <div class="form-outline mb-4">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                                <input type="submit" value="Send Request" class="btn btn-primary" />
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Edit Profile Modal -->
+                                    <div class="modal fade" id="editprofileModal" tabindex="-1" aria-labelledby="editprofileModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content" style="border-radius: 1rem; background-color: #f9f5f2; ">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editprofileModalLabel">Edit Profile</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form asp-action="Edit">
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <input type="hidden" asp-for="UserId" />
+                                                        <div class="form-group">
+                                                            <label asp-for="FirstName" class="control-label"></label>
+                                                            <input asp-for="FirstName" class="form-control" />
+                                                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group mt-3">
+                                                            <label asp-for="LastName" class="control-label"></label>
+                                                            <input asp-for="LastName" class="form-control" />
+                                                            <span asp-validation-for="LastName" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group mt-3">
+                                                            <label asp-for="MobileNumber" class="control-label"></label>
+                                                            <input asp-for="MobileNumber" class="form-control" />
+                                                            <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                                                        </div>
+                                                        <div class="form-group mt-3">
+                                                            <label asp-for="Email" class="control-label"></label>
+                                                            <input asp-for="Email" class="form-control" />
+                                                            <span asp-validation-for="Email" class="text-danger"></span>
+                                                        </div>
+                                                        <br />
+                                                        <div class="form-group float-end">
+                                                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                                                            <input type="submit" value="Save" class="btn btn-dark" />
+
+                                                        </div>
+                                                        <br /><br /><br />
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card float-start w-100 mt-3" style="border-radius: 15px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex text-black">
+                                <div class="flex-grow-1 ms-3">
+                                    <h4>
+                                        <i class="fa-solid fa-house me-1"></i>My Addresses
+                                            <a asp-controller="Home" asp-action="UserShippingAddress" class="text-black fs-6 float-end">
+                                                <i class="fa-regular fa-plus me-2"></i>Add New Address
+                                            </a>
+
+                                    </h4>
+                                    <hr />
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                @if (ViewBag.UserAddressList.Count == 0)
+                                                {
+                                                    <div class="col-12">
+                                                        <p class="text-center">No Address is added yet.</p>
+                                                    </div>
+
+                                                }
+                                                else
+                                                {
+                                                    <div class="row mb-4">
+                                                        @foreach (var item in ViewBag.UserAddressList)
+                                                        {
+                                                            <div class="col-sm-6">
+                                                                <div class="card h-100">
+                                                                    <div class="card-body">
+                                                                        <h5 class="card-title">@ViewData["UserName"] <i class="fas fa-trash-alt float-end deleteUserAddress" data-id="@item.Id" data-toggle="tooltip" title="Delete Address" style="color: #cecece;"></i></h5>
+                                                                        <p class="card-text">
+                                                                            @item.Address, @item.City, @item.State, @item.PostalCode @item.Country
+                                                                        </p>
+                                                                        <a asp-controller="Home" asp-action="EditUserShippingAddress" asp-route-id="@item.Id" class="EditUserAddress btn btn-outline-dark btn-block w-100 mb-2 ">
+                                                                            Edit Address
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                    </div>
+                                                }
+                                                
+                                                   
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+    @section scripts{
+        <script>
+            $(document).ready(function () {
+                $('.deleteUserAddress').click(function () {
+                    var userAddressId = $(this).data('id');
+
+                    $.ajax({
+                        url: '@Url.Action("DeleteUserShippingAddress", "Home")',
+                        data: { addressId: userAddressId },
+                        success: function () {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Address has been successfully deleted!',
+                                confirmButtonColor: '#28a745'
+                            }).then(res => { location.reload(); });
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while deleting the address.',
+                                confirmButtonColor: '#28a745'
+                            });
+
+                        }
+                    });
+                });
+
+
+            });
+
+        </script>
+    }
+</body>

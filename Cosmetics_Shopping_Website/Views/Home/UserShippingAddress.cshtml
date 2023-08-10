@@ -1,0 +1,168 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.UserAddressVM
+
+
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Shipping Address";
+}
+
+<body class="mb-0">
+    <div class="space bg-transparent"></div>
+    <div class="d-flex align-items-center justify-content-center mt-3">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item text-black "><a href='javascript:history.go(-1)' class="text-reset notActive">Cart</a></li>
+                <li class="breadcrumb-item text-black active" aria-current="page"><a href="#" class="text-reset">Shipping</a></li>
+                <li class="breadcrumb-item text-black" aria-current="page">Payment</li>
+                <li class="breadcrumb-item text-black" aria-current="page">Orders</li>
+            </ol>
+        </nav>
+    </div>
+    <div class="container mt-0 py-0 h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-12">
+                <div class="card rounded-3 gradient-custom">
+                    <div class="card-body p-0">
+                        <div class="row g-0" >
+                            <div class="col-md-5 ">
+                                <div style="margin-top: 50%; margin-left: 10px;" class="text-center">
+                                    <i id="animationDemo" data-mdb-animation="slide-right" data-mdb-toggle="animation"
+                                       data-mdb-animation-reset="true" data-mdb-animation-start="onScroll"
+                                       data-mdb-animation-on-scroll="repeat" class="fas fa-3x fa-shipping-fast text-black"></i>
+                                    <h3 class="mt-3 text-black">Glance Cosmetics</h3>
+                                    <p class="text-black">You are few steps away from placing your order!</p>
+                                </div>
+                                <div class="text-center">
+                                    <a href='javascript:history.go(-1)' class="text-body">
+                                        <i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop
+                                    </a>
+                                    
+                                </div>
+
+
+                            </div>
+                            <div class="col-md-7 justify-content-center">
+                                <div class="card card-custom pb-4">
+                                    <div class="card-body mt-0 mx-5">
+                                        <div class="text-start mb-3 pb-2 mt-3">
+                                            <h3 style="color: #495057 ;">Shipping Address</h3>
+                                            <hr class="my-2">
+                                            @if(ViewData["AddressAddedMsg"] != null)
+                                            {
+                                                <div class="text-center border border-success">
+                                                    <p class="text-success">@ViewData["AddressAddedMsg"]</p>
+                                                </div>
+                                            }
+                                        </div>
+                                        <form asp-action="UserShippingAddress" class="mb-0">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <div class="row mb-4">
+                                                <div class="form-group">
+                                                    <div class="form-outline">
+                                                        <label asp-for="FullName" class="control-label"></label>
+                                                        <input asp-for="FullName" class="form-control" />
+                                                        <span asp-validation-for="FullName" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col form-group">
+                                                    <div class="form-outline">
+                                                        <label asp-for="MobileNumber" class="control-label"></label>
+                                                        <input asp-for="MobileNumber" class="form-control" />
+                                                        <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col form-group">
+                                                    <div class="form-outline">
+                                                        <label asp-for="Email" class="control-label"></label>
+                                                        <input asp-for="Email" class="form-control" />
+                                                        <span asp-validation-for="Email" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="form-group">
+                                                    <div class="form-outline">
+                                                        <label asp-for="Country" class="control-label"></label>
+                                                        <input asp-for="Country" class="form-control" value="@ViewData["Country"]" id="countryInput" />
+                                                        <span asp-validation-for="Country" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="col form-group">
+                                                    <div class="form-outline">
+                                                        <label asp-for="StateId" class="control-label"></label>
+                                                        <select asp-for="StateId" id="stateInput" class="form-control" asp-items="ViewBag.DropDownDataForStates">
+                                                            <option>---Select State--</option>
+                                                        </select>
+                                                        <span asp-validation-for="StateId" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                                <div class="col form-group">
+                                                    <div class="form-outline">
+                                                        <label asp-for="City" class="control-label"></label>
+                                                        <input asp-for="City" class="form-control" id="cityInput" />
+                                                        <span asp-validation-for="City" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="form-group">
+                                                    <div class="form-outline">
+                                                        <label asp-for="Address" class="control-label"></label>
+                                                        <input asp-for="Address" class="form-control" id="addressInput" />
+                                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-4">
+                                                <div class="form-group">
+                                                    <div class="form-outline">
+                                                        <label asp-for="PostalCode" class="control-label"></label>
+                                                        <input asp-for="PostalCode" class="form-control" maxlength="6" id="postalCodeInput" />
+                                                        <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="form-outline">
+                                                    <input type="checkbox" asp-for="IsDefault" value="true" />
+                                                    <label asp-for="IsDefault"></label>
+                                                </div>
+                                                
+                                            </div>
+                                            <div class="form-group float-end">
+                                                <div class="form-outline d-flex  my-0 gap-lg-3">
+                                                    <input type="submit" value="Save Address" class="btn btn-outline-dark w-75 submitButton" />
+                                                    <a asp-controller="Home" asp-action="CheckoutDetails" type="button" class="btn btn-dark btn-block w-100"
+                                                       data-mdb-ripple-color="dark">
+                                                        Checkout
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+   
+    <div class="space bg-transparent"></div>
+
+
+
+</body>
+
+
+
+

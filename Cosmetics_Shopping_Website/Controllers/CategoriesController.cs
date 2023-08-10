@@ -2,9 +2,11 @@
 using Cosmetics_Shopping_Website.GenericPattern.Models;
 using Cosmetics_Shopping_Website.GenericPattern.Interfaces;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Cosmetics_Shopping_Website.Controllers
 {
+    
     public class CategoriesController : Controller
     {
         public readonly ICategoryServices _categoryServices;
@@ -70,7 +72,7 @@ namespace Cosmetics_Shopping_Website.Controllers
 
         }
 
-        //Details of particular user
+        //Details of particular category
         public async Task<IActionResult> Details(int id)
         {
             try

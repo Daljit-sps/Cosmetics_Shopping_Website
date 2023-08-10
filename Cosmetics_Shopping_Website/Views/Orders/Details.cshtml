@@ -1,0 +1,128 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.Order_Items_PaymentVM
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Details";
+}
+
+
+<body>
+
+    <div class="row">
+        <div>
+            <div class="container-fluid mt-2 ">
+                <div class="space bg-transparent"></div>
+                <!-- row  -->
+                <div class="row mb-6">
+
+                    <div class="col-md-12 col-12 mt-6">
+                        <!-- card  -->
+                        <div class="card">
+                            <!-- card header  -->
+                            <div class="card-header bg-white  py-4">
+
+                                <div>
+                                    <h4 class="mb-0">Details of Order Placedc by: @Model.UserName</h4>
+
+                                </div>
+
+                            </div>
+                            <div class="card_CSP text-black">
+
+                                <div class="card-body">
+                                    <div>
+                                        <dl class="row">
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.OrderPlacedOn)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                @Html.DisplayFor(model => model.OrderPlacedOn)
+                                            </dd>
+
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.DeliveryDate)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                @Html.DisplayFor(model => model.DeliveryDate)
+                                            </dd>
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.TotalPrice)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                Rs.@Html.DisplayFor(model => model.TotalPrice)
+                                            </dd>
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.PaymentStatus)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                @Html.DisplayFor(model => model.PaymentStatus)
+                                            </dd>
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.OrderStatus)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                @Html.DisplayFor(model => model.OrderStatus)
+                                            </dd>
+                                            <dt class="col-sm-5">
+                                                @Html.DisplayNameFor(model => model.UserAddress)
+                                            </dt>
+                                            <dd class="col-sm-5">
+                                                @Html.DisplayFor(model => model.UserAddress), @Model.City
+                                            </dd>
+                                        </dl>
+                                        <div class="float-end">
+                                            <a href="#" data-bs-toggle="modal" data-bs-target="#updateorderstatusModal">Update Order Status</a> | 
+                                            <a asp-action="Index">Back to List</a>
+                                        </div>
+
+                                    </div>
+                                    <!-- update order status Modal -->
+                                    <div class="modal fade" id="updateorderstatusModal" tabindex="-1" aria-labelledby="updateorderstatusLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content" style="border-radius: 1rem; background-color: #f9f5f2; ">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="updateorderstatusLabel">Update Order Status</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form asp-action="UpdateOrderStatus">
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <input type="hidden" asp-for="OrderId" />
+                                                        <div class="form-group">
+                                                            <label asp-for="OrderStatus" class="control-label"></label>
+                                                            <select asp-for="OrderStatus" class="form-control">
+                                                                <option value="">Select Order Status</option>
+                                                                @foreach (var statusOption in ViewBag.DropDownData)
+                                                                {
+                                                                    <option value="@statusOption">@statusOption</option>
+                                                                }
+                                                            </select>
+                                                            <span asp-validation-for="OrderStatus" class="text-danger"></span>
+                                                        </div>
+                                                        <br />
+                                                        <div class="form-group float-end">
+                                                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                                                            <input type="submit" value="Save" class="btn btn-dark" />
+
+                                                        </div>
+                                                        <br /><br /><br />
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+</body>

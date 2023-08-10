@@ -1,4 +1,4 @@
-﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.ProductVariantVM
+﻿@model IEnumerable<Cosmetics_Shopping_Website.GenericPattern.ViewModels.ProductVariantVM>
 
 @{
     Layout = "/Views/Shared/_Layout.cshtml";
@@ -21,7 +21,7 @@
                     <div class="row m-4 ">
                         <div class="col-md-6 border-end">
                             <!--image-->
-                            <img src="~/images/@Model.VariantImage"
+                            <img src="~/images/@ViewBag.VariantDetails.VariantImage"
                                  alt="Blushes"
                                  class="image-responsive w-50 mx-auto d-block" />
                         </div>
@@ -29,25 +29,18 @@
                         <div class="col-md-6">
                             <!--Data-->
                             <div>
-                                <h4>@Model.VariantName <span>
-                                        @if (Model.IsWishlisted)
+                                <h4>
+                                    @ViewBag.VariantDetails.VariantName <span>
+                                        @if (ViewBag.VariantDetails.IsWishlisted)
                                         {
-                                            <i class="fa-solid fa-heart float-end" style="color: #f4101c;" onclick="location.href='@Url.Action("WishlistItem", "Home", new{ productVariantId = @Model.Id})'" id="full-heart-icon" data-mdb-toggle="tooltip" title="Wishlist"></i>
+                                            <i class="fa-solid fa-heart float-end removeItemFromWishlist" data-id="@ViewBag.VariantDetails.Id" style="color: #f4101c;" data-mdb-toggle="tooltip" title="Wishlist"></i>
 
                                         }
                                         else
                                         {
-                                            <i class="fa-regular fa-heart float-end" id="empty-heart-icon" onclick="location.href='@Url.Action("WishlistItem", "Home", new{ productVariantId = @Model.Id})'" data-mdb-toggle="tooltip" title="Wishlist"></i>
+                                            <i class="fa-regular fa-heart float-end addItemToWishlist" data-id="@ViewBag.VariantDetails.Id" data-mdb-toggle="tooltip" title="Wishlist"></i>
                                         }
-                                       @* @if ((bool)ViewData["wishlistItem"] == false)
-                                        {
-                                            <i class="fa-solid fa-heart float-end" style="color: #f4101c;" onclick="location.href='@Url.Action("WishlistItem", "Home", new{ productVariantId = @Model.Id})'" id="full-heart-icon" data-mdb-toggle="tooltip" title="Wishlist"></i>
-                                       
-                                        }
-                                        else
-                                        {
-                                             <i class="fa-regular fa-heart float-end" id="empty-heart-icon" onclick="location.href='@Url.Action("WishlistItem", "Home", new{ productVariantId = @Model.Id})'" data-mdb-toggle="tooltip" title="Wishlist"></i>
-                                        }*@
+                                      
                                     </span>
                                 </h4>
                             </div>
@@ -57,25 +50,20 @@
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
                                     <i class="fa fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="ms-1">
+                                        4.5
+                                    </span>
                                 </div>
-                                <span>256 reviews</span>
+                                
                             </div><br />
-                            <h6>Description</h6>
-                            <p>@Model.VariantDescription</p>
-                            <div>
-                                <span class="fw-bold">Color</span>	<div class="colors">
-                                    <ul id="marker">
-                                        <li id="marker-1"></li>
-                                        <li id="marker-2"></li>
-                                        <li id="marker-3"></li>
-                                        
-                                    </ul>
-                                </div>
-                            </div>
-                            <h5>Price: Rs.@Model.Price</h5>
-                            <div class="buttons d-flex flex-row mt-2 gap-3">
-                                <button class="btn btn-outline-dark">Buy Now</button>
-                                <button class="btn btn-dark">Add to Basket</button>
+                            <h6 class="fw-bold">Description</h6>
+                            <p style="text-align:justify;">@ViewBag.VariantDetails.VariantDescription</p>
+                            
+                            <h5>Price: Rs.@ViewBag.VariantDetails.Price</h5>
+                            <div class="buttons d-flex flex-row mt-4 gap-3">
+                                <a data-id="@ViewBag.VariantDetails.Id" class="btn btn-outline-dark BuyNow">Buy Now</a>
+                                <a data-id="@ViewBag.VariantDetails.Id" class="btn btn-dark addItemToCart">Add to Basket</a>
                             </div>
                         </div>
                     </div>
@@ -83,69 +71,188 @@
 
             </div>
         </div>
+       
     </div>
-    <div class="m-5 p-0 "><h4>See Also</h4></div>
-    <div class="card-group mt-5 p-5">
-        <div class="card me-4 rounded">
-            <img src="https://cdn.shopify.com/s/files/1/0979/5386/products/Untitleddesign-2022-04-21T131509.272_2000x.png?v=1686324860" class="card-img-top" alt="makeup-card">
-            <div class="card-img-overlay align-items-center justify-content-center">
-                <h5 class="card-title">Makeup</h5>
-                <div class=" border border-dark rounded w-25  justify-content-center"><small class="card-text">Shop Now</small></div>
-            </div>
-        </div>
-        <div class="card me-4 rounded">
-            <img src="~/images/card-scrub-homepage.jpg" class="card-img-top" alt="bodycare-card">
-            <div class="card-img-overlay align-items-center justify-content-center">
-                <h5 class="card-title">Body Care</h5>
-                <div class=" border border-dark rounded w-25  justify-content-center"><small class="card-text">Shop Now</small></div>
-            </div>
-        </div>
-        <div class="card rounded">
-            <img src="https://image.harrods.com/lancome-idole-eau-de-parfum-75ml_14823474_43345282_2048.jpg" class="card-img-top" alt="fragrance-card" style="height:407px">
-            <div class="card-img-overlay align-items-center justify-content-center">
-                <h5 class="card-title">Fragrance</h5>
-                <div class=" border border-dark rounded w-25  justify-content-center"><small class="card-text ">Shop Now</small></div>
-            </div>
-        </div>
-    </div>
-    
+    @if (ViewBag.HasSimilarItems != null)
+    {
+        <section class="mx-0">
+            <div class="container py-5">
+                <div>
+                    <h3>Similar Items </h3>
+                    <hr/>             
+                </div>
+                <div class="row">
+                    @foreach(var item in Model)
+                    {
+                        <div class="col-md-12 col-lg-4 mb-4 mb-lg-0">
+                            <div class="card similar_product_card">
+                                <img src="~/images/@item.VariantImage"
+                                         class="card-img-top" alt="variantImage" onclick="location.href='@Url.Action("Product_Details_for_Customer", "Home", new {id =@item.Id })'" />
 
-    @section scripts{
-        <script>
-            
-            document.getElementById("empty-heart-icon").addEventListener("click", function () {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Item has been successfully added to your Wishlist!',
-                    confirmButtonColor: '#28a745'
-                });
-            });
 
-            document.getElementById("full-heart-icon").addEventListener("click", function () {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Item has been successfully remove to your Wishlist!',
-                    confirmButtonColor: '#28a745'
-                });
-            });
-        </script>
+                                <div class="card-body align-items-center justify-content-center">
+
+                                    <div class="d-flex mb-3">
+                                        <h6 class="mb-0">@item.VariantName</h6>
+                                        
+                                    </div>
+                                    <h6 class="text-dark mb-0">Price: Rs.@item.Price</h6>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    
+                </div>
+            </div>
+        </section>
+                       
 
     }
+   
+
+    @section scripts {
+        <script>
+
+            $(document).ready(function () {
+
+
+                $('.addItemToCart').click(function () {
+                    var variantId = $(this).data('id');
+                    var q = 1;
+                    $.ajax({
+                        url: '@Url.Action("AddToCart", "Home")',
+                        data: { productVariantId: variantId,  quantity: q},
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully added to your Cart!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(res => { location.reload(); });
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while adding the item to your Cart.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+                        
+                    });
+
+                });
+
+                $('.BuyNow').click(function () {
+                    var variantId = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("SelectDeliveryAddress", "Home")',
+                        data: { productVariantId: variantId},
+                        type: 'GET',
+                        cache: false,
+                        success: function (response) {
+                            if (response.success == false) {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            } else {
+                                window.location.href = '@Url.Action("SelectDeliveryAddress", "Home")' + '?productVariantId=' + variantId;
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while processing your request.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+
+                    });
+
+                });
+
+                $('.addItemToWishlist').click(function () {
+                    var variantId = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("WishlistItem", "Home")',
+                        data: { productVariantId: variantId },
+                        success: function (response) {
+                            if (response.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: 'Item has been successfully added to your Wishlist!',
+                                    confirmButtonColor: '#28a745'
+                                }).then(res => { location.reload(); });
+                            } else {
+                                Swal.fire({
+                                    icon: 'info',
+                                    title: 'Kindly, Login or SignUp',
+                                    timer: 2000,
+                                    confirmButtonColor: '#28a745'
+                                });
+                            }
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while adding the item to your Cart.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+                       
+                    });
+                });
+                $('.removeItemFromWishlist').click(function () {
+                    var variantId = $(this).data('id');
+                    $.ajax({
+                        url: '@Url.Action("WishlistItem", "Home")',
+                        data: { productVariantId: variantId },
+                        success: function () {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Item has been successfully removed to your Wishlist!',
+                                confirmButtonColor: '#28a745'
+                            }).then(res => { location.reload(); });
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while removing the item from your Wishlist.',
+                                confirmButtonColor: '#28a745'
+                            });
+                        }
+                    });
+                });
+            });
+
+            
+
+        </script>
+    }
+
+  
 
 
 
 
 </body>
-
-@*document.getElementById("full-heart-icon").addEventListener("click", function () {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success',
-                    text: 'Item has been successfully removed to your Wishlist!',
-                    confirmButtonColor: '#28a745'
-                });
-            });
-*@
 

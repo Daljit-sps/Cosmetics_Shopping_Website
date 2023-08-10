@@ -1,0 +1,90 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.Order_Items_PaymentVM
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Order Details";
+}
+
+<body class="mb-0">
+    <div class="space bg-transparent"></div>
+    <div class="container-fluid mt-5 px-5">
+        <article class="card">
+            <header class="card-header"> My Orders / Tracking </header>
+            <div class="card-body">
+                <h6>Order ID: @Model.OrderId</h6>
+                <article class="card">
+                    <div class="card-body row">
+                        <div class="col"> <strong>Delivery Date:</strong> <br>@Model.DeliveryDate </div>
+                        <div class="col"> <strong>Status:</strong> <br>@Model.OrderStatus </div>
+                       
+                    </div>
+                </article>
+                <div class="track">
+                    @if(Model.OrderStatus == "Pending")
+                    {
+                        <div class="step"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order Approved</span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order Packed</span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Delivered</span> </div>
+                    }
+                    else if(Model.OrderStatus == "Approved")
+                    {
+                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order Approved</span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order Packed</span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Delivered</span> </div>
+                    }
+                    else if (Model.OrderStatus == "Order Packed")
+                    {
+                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order Approved</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order Packed</span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Delivered</span> </div>
+                    }
+                    else if(Model.OrderStatus == "Shipped"){
+                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order Approved</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order Packed</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                        <div class="step"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Delivered</span> </div>
+                    }
+                    else
+                    {
+                        <div class="step active"> <span class="icon"> <i class="fa fa-check"></i> </span> <span class="text">Order Approved</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Order Packed</span> </div>
+                        <div class="step active"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> On the way </span> </div>
+                        <div class="step active"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Delivered</span> </div>
+                    }
+                   
+                </div>
+                <hr>
+                <h5>Ordered Items</h5>
+                <ul class="row ul-orderdetails">
+                    
+                    @foreach (var item in ViewBag.OrderItemsList)
+                    {
+                        <li class="col-md-4">
+                           
+                            <figure class="itemside mb-3">
+                                <div class="aside"><img src="~/images/@item.VariantImage" class="img-sm border img-fluid"></div>
+                                <figcaption class="info align-self-center">
+                                    <p class="title">@item.ProductVariantName <br /><span class="text-muted">Quantity.@item.Quantity </span></p> <span class="text-muted">Rs.@item.Price </span>
+                                </figcaption>
+                            </figure>
+                        </li>
+                    }
+                   
+                   
+                </ul>
+                <hr>
+                <a href="javascript:history.go(-1)" class="btn btn-black float-end"> <i class="fa fa-chevron-left"></i> Back to orders</a>
+            </div>
+        </article>
+    </div>
+
+
+
+
+
+
+</body>
+

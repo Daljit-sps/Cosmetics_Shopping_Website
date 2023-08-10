@@ -1,0 +1,95 @@
+﻿@model Cosmetics_Shopping_Website.GenericPattern.ViewModels.GetUserVM
+
+@{
+    Layout = "/Views/Shared/AdminNav.cshtml";
+    ViewData["Title"] = "Profile";
+}
+<body class="mb-0">
+    <div class="space bg-transparent"></div>
+    <section class="vh-100">
+        <div class="container py-5 h-100">
+            <div class="row d-flex justify-content-center h-100">
+                <div class="col-lg-12">
+                    <div class="card float-start w-100" style="border-radius: 15px;">
+                        <div class="card-body p-4">
+                            <div class="d-flex text-black">
+                                <div class="flex-grow-1 ms-3">
+                                    <h4>Profile Details</h4><hr />
+                                    <div class="row">
+                                        <div class="col-lg-6 me-0">
+                                            <h6 class="mb-2 pb-1">Full Name</h6>
+                                            <h6 class="mb-2 pb-1">Mobile Number</h6>
+                                            <h6 class="mb-2 pb-1">Email</h6>
+                                        </div>
+
+                                        <div class="col-lg-6">
+                                            <p class="mb-1 pb-1" style="color: #2b2a2a;">@ViewBag.AdminDetails.FirstName @ViewBag.AdminDetails.LastName</p>
+                                            <p class="mb-1 pb-1" style="color: #2b2a2a;">@ViewBag.AdminDetails.MobileNumber</p>
+                                            <p class="mb-1 pb-1" style="color: #2b2a2a;">@ViewBag.AdminDetails.Email</p>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="buttons d-flex flex-row mt-2 gap-3 float-end">
+                                        <a href="#" class="btn btn-outline-dark resetpasswordModal">Reset Password</a>
+                                        <a asp-controller="Users" asp-action="LogOut" class="btn btn-dark addItemToCart">LogOut</a>
+                                    </div>
+                                   
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+      
+    </section>
+
+    @section scripts{
+        <script>
+
+            $(document).ready(function () {
+
+                $('.resetpasswordModal').click(function () {
+                    Swal.fire({
+                        title: 'Reset Password',
+                        input: 'text',
+                        inputLabel: 'Enter the email address used for your account below and we will send you a link to reset your password.',
+                        showCancelButton: true,
+                        confirmButtonText: 'Send Request',
+                        cancelButtonText: 'Cancel',
+                        preConfirm: (email) => {
+                            // Make an Ajax call to the controller
+                            $.ajax({
+                                url: '@Url.Action("ForgetPassword", "Users")',
+                                type: 'POST',
+                                data: { Email: email },
+                                success: function () {
+                                    Swal.fire({
+                                        icon: 'success',
+                                        title: 'Request Sent',
+                                        text: 'Password reset request has been sent to your email.',
+                                        confirmButtonColor: '#28a745'
+                                    });
+                                },
+                                error: function () {
+                                    Swal.fire({
+                                        icon: 'error',
+                                        title: 'Request Failed',
+                                        text: 'An error occurred while sending the request.',
+                                        confirmButtonColor: '#d33'
+                                    });
+                                }
+                            });
+                        }
+                    });
+                });
+                
+                
+            });
+        </script>
+    }
+
+   </body>

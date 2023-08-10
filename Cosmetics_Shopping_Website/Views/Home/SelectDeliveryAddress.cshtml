@@ -1,0 +1,131 @@
+﻿@model IEnumerable<Cosmetics_Shopping_Website.GenericPattern.ViewModels.UserAddressVM>
+
+
+@{
+    Layout = "/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Delivery Addresses";
+}
+<body class="mb-0">
+    <div class="space bg-transparent"></div>
+    <div class="d-flex align-items-center justify-content-center mt-3">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item text-black "><a href='javascript:history.go(-1)' class="text-reset notActive">Cart</a></li>
+                <li class="breadcrumb-item text-black active" aria-current="page"><a href='#' class="text-reset">Shipping</a></li>
+                <li class="breadcrumb-item text-black " aria-current="page">Payment</li>
+                <li class="breadcrumb-item text-black" aria-current="page">Orders</li>
+            </ol>
+        </nav>
+    </div>
+    <section class="h-100 h-custom">
+        <div class="container-fluid py-2 h-100 ">
+            <div class="row d-flex justify-content-center align-items-center h-100">
+                <div class="col">
+                    <div class="card">
+                        <div class="card-body p-4">
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    
+                                    <h5 class="mt-5">
+                                        <i class=" fas fa-shipping-fast me-2"></i> Shipping Address
+
+                                    </h5>
+                                    <hr>
+
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <div>
+                                            <p class="mb-1 fw-bold">
+                                                Select a delivery address
+                                            </p>
+                                            <p class="mb-0 float-start">Currently, You have @ViewData["UserAdressesCount"] addresses </p>
+                                        </div>
+                                    </div>
+                                    
+
+
+                                    <div class="card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-center align-items-center">
+                                                <div class="row mb-4">
+                                                    @foreach (var item in Model)
+                                                    {
+                                                        <div class="col-sm-6">
+                                                            <div class="card h-100">
+                                                                <div class="card-body">
+                                                                    <h5 class="card-title">@ViewData["UserName"] <i class="fas fa-trash-alt float-end deleteUserAddress" data-id="@item.Id" data-toggle="tooltip" title="Delete Address" style="color: #cecece;"></i></h5>
+                                                                    <p class="card-text">
+                                                                        @item.Address, @item.City, @item.State, @item.PostalCode @item.Country
+                                                                    </p>
+                                                                        <a asp-action="GetSelectedDeliveryAddress" asp-route-selectedAddressId="@item.Id" class="btn btn-dark btn-block text-white w-100 mb-2 saveDeliveryAddressbutton">
+                                                                        Deliver to this Address
+                                                                    </a>
+                                                                    <a asp-action="EditUserShippingAddress" asp-route-id="@item.Id" class="EditUserAddress btn btn-outline-dark btn-block w-100 mb-2 ">
+                                                                        Edit Address
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 pt-0 float-end">
+
+                                        <a asp-action="UserShippingAddress" class="text-body float-end">
+                                            <i class="fa-regular fa-plus me-2"></i>Add New Address
+                                        </a><br />
+                                            <a href='javascript:history.go(-1)' class="text-body">
+                                                <i class="fas fa-long-arrow-alt-left me-2"></i>Back to shop
+                                            </a>
+                                        
+                                    </div>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    @section scripts{
+        <script>
+            $(document).ready(function () {
+                $('.deleteUserAddress').click(function () {
+                    var userAddressId = $(this).data('id');
+
+                    $.ajax({
+                        url: '@Url.Action("DeleteUserShippingAddress", "Home")',
+                        data: { addressId: userAddressId },
+                        success: function () {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success',
+                                text: 'Address has been successfully deleted!',
+                                confirmButtonColor: '#28a745'
+                            }).then(res => { location.reload(); });
+
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Failure',
+                                text: 'Error occurred while deleting the address.',
+                                confirmButtonColor: '#28a745'
+                            });
+
+                        }
+                    });
+                });
+
+                    
+            });
+
+        </script>
+    }
+</body>
