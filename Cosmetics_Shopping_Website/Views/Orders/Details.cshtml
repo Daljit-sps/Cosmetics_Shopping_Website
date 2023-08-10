@@ -71,46 +71,11 @@
                                             </dd>
                                         </dl>
                                         <div class="float-end">
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#updateorderstatusModal">Update Order Status</a> | 
-                                            <a asp-action="Index">Back to List</a>
+                                            <a asp-action="Index" class="text-black">Back to List</a>
                                         </div>
 
                                     </div>
-                                    <!-- update order status Modal -->
-                                    <div class="modal fade" id="updateorderstatusModal" tabindex="-1" aria-labelledby="updateorderstatusLabel" aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered">
-                                            <div class="modal-content" style="border-radius: 1rem; background-color: #f9f5f2; ">
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title" id="updateorderstatusLabel">Update Order Status</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                    <form asp-action="UpdateOrderStatus">
-                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                                                        <input type="hidden" asp-for="OrderId" />
-                                                        <div class="form-group">
-                                                            <label asp-for="OrderStatus" class="control-label"></label>
-                                                            <select asp-for="OrderStatus" class="form-control">
-                                                                <option value="">Select Order Status</option>
-                                                                @foreach (var statusOption in ViewBag.DropDownData)
-                                                                {
-                                                                    <option value="@statusOption">@statusOption</option>
-                                                                }
-                                                            </select>
-                                                            <span asp-validation-for="OrderStatus" class="text-danger"></span>
-                                                        </div>
-                                                        <br />
-                                                        <div class="form-group float-end">
-                                                            <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
-                                                            <input type="submit" value="Save" class="btn btn-dark" />
-
-                                                        </div>
-                                                        <br /><br /><br />
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
 
