@@ -61,7 +61,7 @@
                                                 <div class="form-group">
                                                     <div class="form-outline">
                                                         <label asp-for="FullName" class="control-label"></label>
-                                                        <input asp-for="FullName" class="form-control" id="txt-fullname" />
+                                                        <input asp-for="FullName" class="form-control" id="txt-fullname" readonly/>
                                                         <span asp-validation-for="FullName" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -70,14 +70,14 @@
                                                 <div class="col form-group">
                                                     <div class="form-outline">
                                                         <label asp-for="MobileNumber" class="control-label"></label>
-                                                        <input asp-for="MobileNumber" class="form-control" id="txt-mobileno" />
+                                                        <input asp-for="MobileNumber" class="form-control" id="txt-mobileno" readonly/>
                                                         <span asp-validation-for="MobileNumber" class="text-danger"></span>
                                                     </div>
                                                 </div>
                                                 <div class="col form-group">
                                                     <div class="form-outline">
                                                         <label asp-for="Email" class="control-label"></label>
-                                                        <input asp-for="Email" class="form-control" id="txt-email" />
+                                                        <input asp-for="Email" class="form-control" id="txt-email" readonly />
                                                         <span asp-validation-for="Email" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -86,7 +86,7 @@
                                                 <div class="form-group">
                                                     <div class="form-outline">
                                                         <label asp-for="Country" class="control-label"></label>
-                                                        <input asp-for="Country" class="form-control" value="@ViewData["Country"]" id="countryInput" />
+                                                        <input asp-for="Country" class="form-control" value="@ViewData["Country"]" id="countryInput" readonly/>
                                                         <span asp-validation-for="Country" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -137,9 +137,9 @@
                                             <div class="form-group float-end">
                                                 <div class="form-outline d-flex  my-0 gap-lg-3">
                                                     <input type="submit" value="Save" class="btn btn-dark w-75" />
-                                                    <a asp-action="SelectDeliveryAddress" type="button" class="btn btn-outline-dark btn-block w-100"
+                                                    <a href='javascript:history.go(-2)' type="button" class="btn btn-outline-dark btn-block w-100"
                                                        data-mdb-ripple-color="dark">
-                                                        Back to Addresses
+                                                        Back
                                                     </a>
                                                 </div>
 

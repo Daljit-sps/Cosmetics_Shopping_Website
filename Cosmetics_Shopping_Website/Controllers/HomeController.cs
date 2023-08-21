@@ -15,6 +15,8 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Cosmetics_Shopping_Website.GenericPattern.StaticDetails_SD;
 using Newtonsoft.Json.Linq;
 using System.Drawing.Printing;
+using crypto;
+using System.Net;
 
 namespace Cosmetics_Shopping_Website.Controllers
 {
@@ -27,10 +29,11 @@ namespace Cosmetics_Shopping_Website.Controllers
         public readonly IUserTaskServices _userTaskServices;
         public readonly IPlacingOrderServices _placingOrderServices;
         private readonly IHttpContextAccessor _contextAccessor;
-                
+        private readonly IConfiguration _configuration;
+
         public HomeController(IOptions<StripeSettings> stripeOptions,IEmailServices emailServices,IViewRenderService viewRenderService,
             IProductVariantServices productvariantServices, IHttpContextAccessor contextAccessor, 
-            IUserTaskServices userTaskServices, IPlacingOrderServices placingOrderServices)
+            IUserTaskServices userTaskServices, IPlacingOrderServices placingOrderServices, IConfiguration configuration)
         {
             _stripeSettings = stripeOptions.Value;
             StripeConfiguration.ApiKey = _stripeSettings.SecretKey;
@@ -40,6 +43,7 @@ namespace Cosmetics_Shopping_Website.Controllers
             _contextAccessor = contextAccessor;
             _userTaskServices = userTaskServices;
             _placingOrderServices = placingOrderServices;
+            _configuration = configuration;
         }
 
         //Search
@@ -97,6 +101,7 @@ namespace Cosmetics_Shopping_Website.Controllers
             {
 
                 var objUser = _contextAccessor.HttpContext.Session.GetString("UserData");
+
                 var logedUser = JsonConvert.DeserializeObject<User>(objUser);
 
                 ViewData["IsLogin"] = "Yes";
@@ -282,21 +287,22 @@ namespace Cosmetics_Shopping_Website.Controllers
                 var objUser = _contextAccessor.HttpContext.Session.GetString("UserData");
                 if (string.IsNullOrEmpty(objUser))
                 {
-                    return Json(new { success = false});
+                    return Json(new { success = false, message = "Kindly, Login or SignUp" });
                 }
                 else
                 {
                     var logedUser = JsonConvert.DeserializeObject<User>(objUser);
                     if (logedUser == null)
                     {
-                        return Json(new { success = false});
+                        return Json(new { success = false, message = "Kindly, Login or SignUp" });
+                       
                     }
                     else
                     {
                         var addToCartItem = await _userTaskServices.AddToCart(productVariantId, quantity, logedUser.UserId);
                         if(addToCartItem == null)
                         {
-                            return Json(new { success = false, message = "Error occurred while adding the item to your Cart." });
+                            return Json(new { success = false, message = "Selected Item already exist in your cart" });
                             //return RedirectToAction("Product_Details_for_Customer", new { id = productVariantId });
                         }
                         else
@@ -473,11 +479,20 @@ namespace Cosmetics_Shopping_Website.Controllers
                 if(ModelState.IsValid)
                 {
                     var shippingAddress = await _userTaskServices.AddUserShippingAddress(objUserShippingAddress, logedUser.UserId);
-                    ViewData["AddressAddedMsg"] = "Your Address has been added";
-                    return View(shippingAddress);
+                    if(shippingAddress == null)
+                    {
+                        ViewData["AddressExistMsg"] = "This Address already exist in your addresses";
+                    }
+                    else
+                    {
+                        ViewData["AddressAddedMsg"] = "Your Address has been added";
+                    }
+
+                    return RedirectToAction(nameof(SelectDeliveryAddress)); 
                 }
                 else
                 {
+                   
                     return View();
                 }
                
@@ -628,14 +643,19 @@ namespace Cosmetics_Shopping_Website.Controllers
         {
             try
             {
+                var objUser = _contextAccessor.HttpContext.Session.GetString("UserData");
+                var logedUser = JsonConvert.DeserializeObject<User>(objUser);
+
                 if (selectedAddressId > 0)
                 {
                     TempData["SelectedAddress"] = selectedAddressId;
                     return RedirectToAction(nameof(CheckoutDetails));
+                    
+                    
                 }
                 else
                 {
-                    return View("SelectDeliveryAddress");
+                    return RedirectToAction("SelectDeliveryAddress");
                 }
             }
             catch (Exception)
@@ -700,9 +720,11 @@ namespace Cosmetics_Shopping_Website.Controllers
                 //get required objects
                 decimal shippingPrice = 250;
                 int userAddressId = Convert.ToInt32(TempData["SelectedAddress"]);
-                var productVariant = JsonConvert.DeserializeObject<ProductVariantVM>(data);
-                if (productVariant != null)
+               
+                
+                if(data != null)
                 {
+                    var productVariant = JsonConvert.DeserializeObject<ProductVariantVM>(data);
                     var variantsList = new List<CartItemsVM>
                     {
                         new CartItemsVM
@@ -712,14 +734,17 @@ namespace Cosmetics_Shopping_Website.Controllers
                              Price = productVariant.Price,
                              VariantName = productVariant.VariantName
                         }
-                       
+
                     };
                     decimal totalPrice = productVariant.Price + shippingPrice;
                     var order = await _placingOrderServices.CreateOrderAsync(totalPrice, logedUser.UserId);
                     var orderItems = await _placingOrderServices.CreateOrderItemsAsync(order.Id, variantsList, userAddressId, logedUser.UserId);
 
                     //payment section
-                    var domain = "https://localhost:7077/";
+                    //var domain = "http://182.75.88.147:8145/";
+                    //var domain = "https://glancecosmetics.softprodigy.in";
+                    // domain = "https://localhost:7077/";
+                    var domain = "https://glancecosmetic.softprodigy.in/";
                     var options = new SessionCreateOptions
                     {
                         PaymentMethodTypes = new List<string>
@@ -728,8 +753,8 @@ namespace Cosmetics_Shopping_Website.Controllers
                     },
                         LineItems = new List<SessionLineItemOptions>(),
                         Mode = "payment",
-                        //SuccessUrl = domain+$"Users/HomePage",
                         SuccessUrl = domain + $"Home/OrderConfirmation?id={order.Id}",
+                        //SuccessUrl = domain + $"Users/HomePage",
                         CancelUrl = domain + $"Home/CheckoutDetails",
                     };
 
@@ -766,14 +791,16 @@ namespace Cosmetics_Shopping_Website.Controllers
                         },
                         Quantity = 1,
                     });
-
-
+                    
                     var service = new SessionService();
+                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                    ServicePointManager.ServerCertificateValidationCallback += (o, c, ch, er) => true;
                     Session session = service.Create(options);
                     _placingOrderServices.UpdateOrderStripePaymentIdAsync(order.Id, session.Id);
-
                     Response.Headers.Add("Location", session.Url);
+                    return new StatusCodeResult(303);
                 }
+               
                 else
                 {
                     IEnumerable<CartItemsVM> cartItemsList = await _userTaskServices.GetAllCartItems(logedUser.UserId);
@@ -785,7 +812,9 @@ namespace Cosmetics_Shopping_Website.Controllers
                     var orderItems = await _placingOrderServices.CreateOrderItemsAsync(order.Id, variantsList, userAddressId, logedUser.UserId);
 
                     //payment section
-                    var domain = "https://localhost:7077/";
+                    
+                    //var domain = "http://182.75.88.147:8145/";
+                    var domain = "https://glancecosmetic.softprodigy.in/";
                     var options = new SessionCreateOptions
                     {
                         PaymentMethodTypes = new List<string>
@@ -794,8 +823,8 @@ namespace Cosmetics_Shopping_Website.Controllers
                     },
                         LineItems = new List<SessionLineItemOptions>(),
                         Mode = "payment",
-                        //SuccessUrl = domain+$"Users/HomePage",
                         SuccessUrl = domain + $"Home/OrderConfirmation?id={order.Id}",
+                        //SuccessUrl = domain + $"Users/HomePage",
                         CancelUrl = domain + $"Home/CheckoutDetails",
                     };
 
@@ -832,24 +861,45 @@ namespace Cosmetics_Shopping_Website.Controllers
                         },
                         Quantity = 1,
                     });
-
-
+                   
+                    
                     var service = new SessionService();
-                    Session session = service.Create(options);
+                    System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
+                    ServicePointManager.ServerCertificateValidationCallback += (o, c, ch, er) => true;
+                    Session session = service.Create(options);  
                     _placingOrderServices.UpdateOrderStripePaymentIdAsync(order.Id, session.Id);
-
                     Response.Headers.Add("Location", session.Url);
+                    return new StatusCodeResult(303);
                 }
 
-                return new StatusCodeResult(303);
+                
                 
             }
-            catch (Exception)
+            catch(StripeException ex)
             {
-                return View("Error");
+                ErrorViewModel errorModel = new();
+
+                errorModel.ErrorMessage = "Stripe Exception >> " + ex.Message;
+                errorModel.StackTrace = ex.StackTrace;
+                return View("Error", errorModel);
+            }
+            catch (Exception ex)
+            {
+                ErrorViewModel errorModel = new();
+
+                errorModel.ErrorMessage = ex.Message;
+                errorModel.StackTrace = ex.StackTrace;
+                while (ex.InnerException != null)
+                {
+                    errorModel.ErrorMessage = ex.InnerException.Message;
+                    errorModel.StackTrace = ex.InnerException.StackTrace;
+                    ex= ex.InnerException;
+                }
+                return View("Error", errorModel);
             }
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> OrderConfirmation(int id)
         {
             try
@@ -935,6 +985,31 @@ namespace Cosmetics_Shopping_Website.Controllers
                 }
             }
             catch(Exception)
+            {
+                return View("Error");
+            }
+        }
+
+        //add address in profile
+        [HttpPost]
+        public async Task<IActionResult> UserShippingAddressProfile(UserAddressVM objUserShippingAddress)
+        {
+            try
+            {
+                var objUser = _contextAccessor.HttpContext.Session.GetString("UserData");
+                var logedUser = JsonConvert.DeserializeObject<User>(objUser);
+                if (ModelState.IsValid)
+                {
+                    var shippingAddress = await _userTaskServices.AddUserShippingAddress(objUserShippingAddress, logedUser.UserId);
+                    return RedirectToAction("Profile", "Users");
+                }
+                else
+                {
+                    return RedirectToAction("Profile", "Users");
+                }
+
+            }
+            catch (Exception)
             {
                 return View("Error");
             }

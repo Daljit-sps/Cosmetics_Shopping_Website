@@ -16,8 +16,11 @@ namespace Cosmetics_Shopping_Website.Authorization
 
         public async Task Invoke(HttpContext context)
         {
-            //Check if "AllowAnonymous" is present or not
-            if (context.GetEndpoint()?.Metadata?.GetMetadata<IAllowAnonymous>() != null)
+            // Check if "AllowAnonymous" is present or not
+            var endpoint = context.GetEndpoint();
+            var allowAnonymousAttribute = endpoint?.Metadata?.GetMetadata<IAllowAnonymous>();
+
+            if (allowAnonymousAttribute != null)
             {
                 await _next.Invoke(context);
                 return;
@@ -28,15 +31,14 @@ namespace Cosmetics_Shopping_Website.Authorization
 
             if (string.IsNullOrEmpty(key))
             {
-
-                //context.Request.Path = "/Users/Login";
+                // Redirect to the login page
                 context.Response.Redirect("/Users/Login");
-                //return;
-                
+                return;
             }
 
             // Continue to the next middleware
             await _next(context);
+            
         }
     }
 

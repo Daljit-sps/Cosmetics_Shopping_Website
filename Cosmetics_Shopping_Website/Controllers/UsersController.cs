@@ -9,6 +9,7 @@ using Cosmetics_Shopping_Website.GenericPattern.Services;
 using Microsoft.AspNetCore.Authorization;
 using Cosmetics_Shopping_Website.GenericPattern.Security;
 using System.Dynamic;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Cosmetics_Shopping_Website.Controllers
 {
@@ -145,7 +146,7 @@ namespace Cosmetics_Shopping_Website.Controllers
             else
             {
                 ViewData["SuccessPasswordReset"] = "Your Password has been reset, Kindly login!";
-                return View();
+                return RedirectToAction(nameof(Login));
             }
             
         }
@@ -175,6 +176,19 @@ namespace Cosmetics_Shopping_Website.Controllers
                         //successful signup email sending
                         var message = new Message(new string[] { objSignUp.Email }, "Welcome to Glance!!!", "Welcome to our website, hope you will shop from us");
                         _emailService.SendEmail(message);
+                        LoginVM objLoginDetails = new()
+                        {
+                            Email = userCreated.Email, 
+                            Password = userCreated.Password
+
+                        };
+                        var currentUser = await _userService.GetForLogin(objLoginDetails);
+                        if (await _userService.ValidateCredentialsAfterSignUp(objLoginDetails))
+                        {
+                            var stringUser = JsonConvert.SerializeObject(currentUser);
+                            _contextAccessor.HttpContext.Session.SetString("UserData", stringUser);
+                            
+                        }
                         return RedirectToAction(nameof(HomePage));
                     }
                     else
@@ -193,7 +207,8 @@ namespace Cosmetics_Shopping_Website.Controllers
             
         }
 
-        //  Dashboard
+        //Dashboard
+        [AllowAnonymous]
         public async Task<IActionResult> Dashboard()
         {
             try
@@ -401,6 +416,15 @@ namespace Cosmetics_Shopping_Website.Controllers
             {
                 //get list of loged user addresses
                 var getUserAddresses = await _userTaskServices.GetUserAddresses(logedUser.UserId);
+                
+                //dropdown to select State
+                var selectListItemsForStates = await _userTaskServices.GetStates();
+                var selectListForStates = new SelectList(selectListItemsForStates, "Id", "StateName");
+                ViewBag.DropDownDataForStates = selectListForStates;
+
+                //get country
+                var country = await _userTaskServices.GetCountry();
+                ViewData["Country"] = country.CountryName;
                 ViewData["IsLogin"] = "Yes";
                 ViewBag.UserAddressList = getUserAddresses;
                 return View(userDetails);

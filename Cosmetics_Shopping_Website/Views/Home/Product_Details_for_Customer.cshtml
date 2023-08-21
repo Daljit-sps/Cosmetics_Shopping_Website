@@ -122,7 +122,7 @@
                     var q = 1;
                     $.ajax({
                         url: '@Url.Action("AddToCart", "Home")',
-                        data: { productVariantId: variantId,  quantity: q},
+                        data: { productVariantId: variantId, quantity: q },
                         success: function (response) {
                             if (response.success) {
                                 Swal.fire({
@@ -148,10 +148,11 @@
                                 confirmButtonColor: '#28a745'
                             });
                         }
-                        
+
                     });
 
                 });
+
 
                 $('.BuyNow').click(function () {
                     var variantId = $(this).data('id');
@@ -227,7 +228,7 @@
                             Swal.fire({
                                 icon: 'success',
                                 title: 'Success',
-                                text: 'Item has been successfully removed to your Wishlist!',
+                                text: 'Item has been successfully removed from your Wishlist!',
                                 confirmButtonColor: '#28a745'
                             }).then(res => { location.reload(); });
 

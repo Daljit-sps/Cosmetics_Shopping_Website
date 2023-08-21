@@ -14,7 +14,7 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 //database connection
-services.AddDbContext<CosmeticsShoppingDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("myconn")));
+services.AddDbContext<DbecomerceContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("myconn")));
 
 //stripe
 services.Configure<StripeSettings>(builder.Configuration.GetSection("Stripe"));
@@ -62,7 +62,8 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseDeveloperExceptionPage();
+    //app.UseExceptionHandler("/Home/Error");
     app.UseHsts();
 }
 

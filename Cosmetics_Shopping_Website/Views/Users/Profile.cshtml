@@ -118,7 +118,7 @@
                                                         </div>
                                                         <div class="form-group mt-3">
                                                             <label asp-for="MobileNumber" class="control-label"></label>
-                                                            <input asp-for="MobileNumber" class="form-control" />
+                                                            <input asp-for="MobileNumber" class="form-control"/>
                                                             <span asp-validation-for="MobileNumber" class="text-danger"></span>
                                                         </div>
                                                         <div class="form-group mt-3">
@@ -148,11 +148,113 @@
                                 <div class="flex-grow-1 ms-3">
                                     <h4>
                                         <i class="fa-solid fa-house me-1"></i>My Addresses
-                                            <a asp-controller="Home" asp-action="UserShippingAddress" class="text-black fs-6 float-end">
+                                        <a href="#" data-bs-toggle="modal" data-bs-target="#addAddressModal" class="text-black fs-6 float-end">
                                                 <i class="fa-regular fa-plus me-2"></i>Add New Address
-                                            </a>
+                                        </a>
+
 
                                     </h4>
+                                    <!-- Add Address Modal -->
+                                    <div class="modal fade" id="addAddressModal" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content" style="border-radius: 1rem; background-color: #f9f5f2; ">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="editprofileModalLabel">Add New Address</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form asp-controller="Home" asp-action="UserShippingAddressProfile" method="post" class="mb-0">
+                                                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                                        <div class="row mb-4">
+                                                            <div class="form-group">
+                                                                <div class="form-outline">
+                                                                    <label asp-for="FullName" class="control-label"></label>
+                                                                    <input asp-for="FullName" class="form-control" value="@Model.FirstName @Model.LastName" readonly />
+                                                                    <span asp-validation-for="FullName" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col form-group">
+                                                                <div class="form-outline">
+                                                                    <label asp-for="MobileNumber" class="control-label"></label>
+                                                                    <input asp-for="MobileNumber" class="form-control" readonly/>
+                                                                    <span asp-validation-for="MobileNumber" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col form-group">
+                                                                <div class="form-outline">
+                                                                    <label asp-for="Email" class="control-label"></label>
+                                                                    <input asp-for="Email" class="form-control" readonly/>
+                                                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="form-group">
+                                                                <div class="form-outline">
+                                                                    <label asp-for="Country" class="control-label"></label>
+                                                                    <input asp-for="Country" class="form-control" value="@ViewData["Country"]" id="countryInput" readonly />
+                                                                    <span asp-validation-for="Country" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="col form-group">
+                                                                <div class="form-outline">
+                                                                    <label asp-for="StateId" class="control-label"></label>
+                                                                    <select asp-for="StateId" id="stateInput" class="form-control" asp-items="ViewBag.DropDownDataForStates">
+                                                                        <option>---Select State--</option>
+                                                                    </select>
+                                                                    <span asp-validation-for="StateId" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col form-group">
+                                                                <div class="form-outline">
+                                                                    <label asp-for="City" class="control-label"></label>
+                                                                    <input asp-for="City" class="form-control" id="cityInput" />
+                                                                    <span asp-validation-for="City" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="form-group">
+                                                                <div class="form-outline">
+                                                                    <label asp-for="Address" class="control-label"></label>
+                                                                    <input asp-for="Address" class="form-control" id="addressInput" />
+                                                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row mb-4">
+                                                            <div class="form-group">
+                                                                <div class="form-outline">
+                                                                    <label asp-for="PostalCode" class="control-label"></label>
+                                                                    <input asp-for="PostalCode" class="form-control" maxlength="6" id="postalCodeInput" />
+                                                                    <span asp-validation-for="PostalCode" class="text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="form-outline">
+                                                                <input type="checkbox" asp-for="IsDefault" value="true" />
+                                                                <label asp-for="IsDefault"></label>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="form-group float-end">
+                                                            <div class="form-outline d-flex  my-0 gap-lg-3">
+                                                                <button type="button" class="btn btn-outline-dark" data-bs-dismiss="modal">Cancel</button>
+                                                                <input type="submit" value="Save Address" class="btn btn-dark" />
+                                                                
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     <hr />
                                     <div class="card mb-3">
                                         <div class="card-body">

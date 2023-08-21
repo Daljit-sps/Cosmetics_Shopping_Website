@@ -54,6 +54,12 @@
                                                     <p class="text-success">@ViewData["AddressAddedMsg"]</p>
                                                 </div>
                                             }
+                                            @if (ViewData["AddressExistMsg"] != null)
+                                            {
+                                                <div class="text-center border border-success">
+                                                    <p class="text-danger">@ViewData["AddressExistMsg"]</p>
+                                                </div>
+                                            }
                                         </div>
                                         <form asp-action="UserShippingAddress" class="mb-0">
                                             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -61,7 +67,7 @@
                                                 <div class="form-group">
                                                     <div class="form-outline">
                                                         <label asp-for="FullName" class="control-label"></label>
-                                                        <input asp-for="FullName" class="form-control" />
+                                                        <input asp-for="FullName" class="form-control" readonly/>
                                                         <span asp-validation-for="FullName" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -70,14 +76,14 @@
                                                 <div class="col form-group">
                                                     <div class="form-outline">
                                                         <label asp-for="MobileNumber" class="control-label"></label>
-                                                        <input asp-for="MobileNumber" class="form-control" />
+                                                        <input asp-for="MobileNumber" class="form-control" readonly/>
                                                         <span asp-validation-for="MobileNumber" class="text-danger"></span>
                                                     </div>
                                                 </div>
                                                 <div class="col form-group">
                                                     <div class="form-outline">
                                                         <label asp-for="Email" class="control-label"></label>
-                                                        <input asp-for="Email" class="form-control" />
+                                                        <input asp-for="Email" class="form-control" readonly />
                                                         <span asp-validation-for="Email" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -86,7 +92,7 @@
                                                 <div class="form-group">
                                                     <div class="form-outline">
                                                         <label asp-for="Country" class="control-label"></label>
-                                                        <input asp-for="Country" class="form-control" value="@ViewData["Country"]" id="countryInput" />
+                                                        <input asp-for="Country" class="form-control" value="@ViewData["Country"]" id="countryInput" readonly />
                                                         <span asp-validation-for="Country" class="text-danger"></span>
                                                     </div>
                                                 </div>
@@ -136,11 +142,11 @@
                                             </div>
                                             <div class="form-group float-end">
                                                 <div class="form-outline d-flex  my-0 gap-lg-3">
-                                                    <input type="submit" value="Save Address" class="btn btn-outline-dark w-75 submitButton" />
-                                                    <a asp-controller="Home" asp-action="CheckoutDetails" type="button" class="btn btn-dark btn-block w-100"
+                                                    <input type="submit" value="Save" class="btn btn-outline-dark w-100 submitButton" />
+                                                    @*<a asp-controller="Home" asp-action="SelectDeliveryAddress" type="button" class="btn btn-dark btn-block w-100"
                                                        data-mdb-ripple-color="dark">
-                                                        Checkout
-                                                    </a>
+                                                        Addresses
+                                                    </a>*@
                                                 </div>
 
                                             </div>
