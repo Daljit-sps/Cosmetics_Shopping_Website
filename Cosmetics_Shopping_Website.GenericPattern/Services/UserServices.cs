@@ -36,6 +36,23 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
                 throw;
             }
         }
+
+        public async Task<bool> ValidateCredentialsAfterSignUp(LoginVM logeduser)
+        {
+            try
+            {
+                var user = await _genericRepository.Get<User>(x => x.Email == logeduser.Email && x.Password == logeduser.Password && x.IsDelete == false);
+                if (user == null)
+                {
+                    return false;
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
         public async Task<User> GetForLogin(LoginVM logeduser)
         {
             try

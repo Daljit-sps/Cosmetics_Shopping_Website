@@ -374,7 +374,7 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
         {
             try
             {
-                var cartItemDetails = await _genericRepository.GetByIdFromMultipleTableBasedOnCondition<CartItem>(productVariantId ,e=>e.UserId == logedUser, e=>e.ProductVariant, e=>e.User);
+                var cartItemDetails = await _genericRepository.Get<CartItem>(e=>e.ProductVariantId == productVariantId && e.UserId == logedUser);
                 if (cartItemDetails == null)
                 {
                     // Add the product to the user's cart
@@ -556,11 +556,11 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
 
         }
 
-        public async Task<UserAddress> AddUserShippingAddress(UserAddressVM objUserShippingAddress, int logedUser)
+        public async Task<UserAddressVM> AddUserShippingAddress(UserAddressVM objUserShippingAddress, int logedUser)
         {
             try
             {
-                var userShippingAddressDetails = await _genericRepository.Get<UserAddress>(e => e.Id == objUserShippingAddress.Id && e.UserId == logedUser && e.IsDelete == false);
+                var userShippingAddressDetails = await _genericRepository.Get<UserAddress>(e => e.Address == objUserShippingAddress.Address && e.City ==objUserShippingAddress.City && e.StateId == objUserShippingAddress.StateId && e.UserId == logedUser && e.IsDelete == false);
                 if (userShippingAddressDetails == null && objUserShippingAddress.Country == "India")
                 {
                     UserAddress objAddress = new()
@@ -576,8 +576,14 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
                         UpdatedBy = logedUser,
                         UpdatedOn = DateTime.Now
                     };
-                    var result = await _genericRepository.Post(objAddress);
-                   
+                     await _genericRepository.Post(objAddress);
+                    UserAddressVM result = new()
+                    {
+                        City = objUserShippingAddress.City,
+                        Address = objUserShippingAddress.Address,
+                        PostalCode = objUserShippingAddress.PostalCode,
+                        StateId = objUserShippingAddress.StateId,
+                    };
                     return result;
 
                 }

@@ -15,6 +15,7 @@ namespace Cosmetics_Shopping_Website.GenericPattern.ViewModels
 
         [Required]
         [DataType(DataType.Password)]
+        [MinLength(6, ErrorMessage = "Need min 6 characters")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; } = null!;
         public string Email { get; set; } = null!;

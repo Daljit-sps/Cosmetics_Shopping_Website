@@ -11,6 +11,9 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Interfaces
     public interface IUserServices
     {
         Task<bool> ValidateCredentials(LoginVM logeduser);
+
+        Task<bool> ValidateCredentialsAfterSignUp(LoginVM logeduser);
+
         Task<User> GetForLogin(LoginVM logeduser);
 
        

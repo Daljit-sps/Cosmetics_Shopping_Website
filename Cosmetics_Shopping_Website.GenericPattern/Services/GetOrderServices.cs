@@ -22,7 +22,7 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
         {
             try
             {
-                var getAllOrdersList = await _genericRepository.GetFromMultipleTableBasedOnConditions<Order>(e => e.IsDelete == false, e => e.User);
+                var getAllOrdersList = await _genericRepository.GetFromMultipleTableBasedOnConditions<Order>(e => e.IsDelete == false && e.PaymentStatus == "paid", e => e.User);
                 return getAllOrdersList.Select(e => new Order_Items_PaymentVM
                 {
                     OrderId = e.Id,

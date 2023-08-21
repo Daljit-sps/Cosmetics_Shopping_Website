@@ -44,7 +44,7 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Interfaces
 
         Task<UserAddressVM> GetLogedUserDetails(int logedUser);
 
-        Task<UserAddress> AddUserShippingAddress(UserAddressVM objUserShippingAddress, int logedUser);
+        Task<UserAddressVM> AddUserShippingAddress(UserAddressVM objUserShippingAddress, int logedUser);
 
         Task<UserAddressVM> EditUserShippingAddress(UserAddressVM objUserShippingAddress, int logedUser);
        

@@ -18,7 +18,10 @@ namespace Cosmetics_Shopping_Website.GenericPattern.ViewModels
 
         [Required(ErrorMessage = "Mobile Number is required")]
         [Display(Name = "Mobile Number")]
-        [DataType(DataType.PhoneNumber)]
+        //[DataType(DataType.PhoneNumber)]
+        [StringLength(10, ErrorMessage = "Mobile number must be exactly 10 digits.", MinimumLength = 10)]
+        [RegularExpression(@"^\d{10}$", ErrorMessage = "Mobile number must consist of 10 digits.")]
+
         public String MobileNumber { get; set; } = null!;
 
 

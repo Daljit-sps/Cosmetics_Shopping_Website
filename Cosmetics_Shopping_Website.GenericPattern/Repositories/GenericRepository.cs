@@ -20,10 +20,10 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Repositories
 
     public class GenericRepository: IGenericRepository
     {
-        private readonly CosmeticsShoppingDbContext _context;
+        private readonly DbecomerceContext _context;
 
 
-        public GenericRepository(CosmeticsShoppingDbContext context)
+        public GenericRepository(DbecomerceContext context)
         {
             _context = context;
 

@@ -1,6 +1,7 @@
 ﻿using Cosmetics_Shopping_Website.GenericPattern.EmailConfig;
 using Cosmetics_Shopping_Website.GenericPattern.Interfaces;
 using MailKit.Net.Smtp;
+using MailKit.Security;
 using MimeKit;
 
 namespace Cosmetics_Shopping_Website.GenericPattern.Services
@@ -32,16 +33,21 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
             //emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Text) { Text = message.Content };
             return emailMessage;
         }
-        private void Send(MimeMessage mailMessage)
+        private async void Send(MimeMessage mailMessage)
         {
             using (var client = new SmtpClient())
             {
                 try
                 {
-                    client.Connect(_emailConfig.SmtpServer, _emailConfig.Port, true);
+                    
+                    client.ServerCertificateValidationCallback = (s, c, h, e) => true;
+                    client.CheckCertificateRevocation = false;
+                    client.Connect(_emailConfig.SmtpServer, _emailConfig.Port, SecureSocketOptions.Auto);
+                    
                     client.AuthenticationMechanisms.Remove("XOAUTH2");
                     client.Authenticate(_emailConfig.UserName, _emailConfig.Password);
-                    client.Send(mailMessage);
+                    await client.SendAsync(mailMessage);
+
                 }
                 catch
                 {
@@ -49,7 +55,8 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
                 }
                 finally
                 {
-                    client.Disconnect(true);
+                    await client.DisconnectAsync(true);
+                    //client.Disconnect(true);
                     client.Dispose();
                 }
             }

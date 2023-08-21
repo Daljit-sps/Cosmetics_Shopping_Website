@@ -101,7 +101,7 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
 
                     objOrder.UpdatedOn = DateTime.Now;
 
-                    await _genericRepository.Put(objOrder);
+                    var result = await _genericRepository.Put(objOrder);
 
                 }
             }
@@ -233,7 +233,7 @@ namespace Cosmetics_Shopping_Website.GenericPattern.Services
             {
                 if(logeduser > 0)
                 {
-                    var getUserOrdersList = await _genericRepository.GetFromMultipleTableBasedOnConditions<Order>(e=>e.UserId == logeduser && e.IsDelete == false, e=>e.User);
+                    var getUserOrdersList = await _genericRepository.GetFromMultipleTableBasedOnConditions<Order>(e=>e.UserId == logeduser && e.IsDelete == false && e.OrderStatus != "Pending", e=>e.User);
                     return getUserOrdersList.Select(e=> new Order_Items_PaymentVM
                     {
                         OrderId = e.Id,
